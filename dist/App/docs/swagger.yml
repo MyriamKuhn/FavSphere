@@ -341,10 +341,353 @@ paths:
                   message:
                     type: string
                     example: "Impossible de supprimer la catégorie."
-
-
-
-
+  /links:
+    get:
+      tags:
+        - link
+      summary: Retrieve the list of links for a user
+      description: Get a list of all available links for a user
+      operationId: getLinks
+      responses:
+        '200':
+          description: Successful operation - list of categories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+        '404':
+          description: No link found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Aucun lien trouvé"
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "La méthode n'est pas autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+  /addLink:
+    post:
+      tags:
+        - link
+      summary: Add a new link for a user
+      description: Add a new link to the list of links for a user
+      operationId: addLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - title
+                - description
+                - fk_category_id
+                - fk_user_id
+              properties:
+                url:
+                  type: string
+                  description: "URL of the link"
+                  example: "https://www.google.com"
+                title:
+                  type: string
+                  description: "Title of the link"
+                  example: "Google"
+                description:
+                  type: string
+                  description: "Description of the link"
+                  example: "Le meilleur moteur de recherche"
+                fk_category_id:
+                  type: integer
+                  description: "Category ID"
+                  example: 1
+                fk_user_id:
+                  type: integer
+                  description: "User ID"
+                  example: 1
+      responses:
+        '201':
+          description: Link successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Lien ajouté avec succès"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+  /updateLink:
+    put:
+      tags:
+        - link
+      summary: Modify a link
+      description: Modify the URL, title, description or the category of a link
+      operationId: updateLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - url
+                - title
+                - description
+                - fk_category_id
+                - fk_user_id
+              properties:
+                id:
+                  type: integer
+                  description: "Link ID"
+                  example: 1
+                url:
+                  type: string
+                  description: "Link URL"
+                  example: "https://www.google.com"
+                title:
+                  type: string
+                  description: "Link title"
+                  example: "Google"
+                description:
+                  type: string
+                  description: "Link description"
+                  example: "Le meilleur moteur de recherche"
+                fk_category_id:
+                  type: integer
+                  description: "Category ID"
+                  example: 1
+                fk_user_id:
+                  type: integer
+                  description: "User ID"
+                  example: 1
+      responses:
+        '200':
+          description: Link successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Lien modifié avec succès"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Le lien n'existe pas"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+  /deleteLink:
+    delete:
+      tags:
+        - link
+      summary: Delete a link
+      description: Delete a link from the list
+      operationId: deleteLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: "Link ID"
+                  example: 1
+      responses:
+        '200':
+          description: Link successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Le lien a été supprimé avec succès."
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Le lien n'existe pas"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+        '503':
+          description: Link can not be deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Impossible de supprimer le lien."
 components:
   schemas:
     Category:
@@ -362,6 +705,37 @@ components:
           type: string
           description: "Color associated with category"
           example: "#FF5733"
+    Link:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Link ID"
+          example: 1
+        url:
+          type: string
+          description: "Link URL"
+          example: "https://www.google.com"
+        title:
+          type: string
+          description: "Link title"
+          example: "Google"
+        description:
+          type: string
+          description: "Link description"
+          example: "Le meilleur moteur de recherche"
+        fk_category_id:
+          type: integer
+          description: "Category ID"
+          example: 1
+        fk_user_id:
+          type: integer
+          description: "User ID"
+          example: 1
+        category_name:
+          type: string
+          description: "Category name"
+          example: "Travail"
   securitySchemes:
     Bearer:
       type: http

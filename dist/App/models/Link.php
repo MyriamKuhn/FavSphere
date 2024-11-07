@@ -79,11 +79,13 @@ class Link
               FROM " . $this->table . " AS link
               INNER JOIN category ON link.fk_category_id = category.id
               WHERE link.fk_user_id = :fk_user_id";
-
       $stmt = $this->connexion->prepare($sql);
+      // Bind des paramètres
       $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
+      // Exécution de la requête
       $stmt->execute();
 
+      // Retourner tous les liens
       return $stmt->fetchAll();
 
     } catch (PDOException $e) {
@@ -111,7 +113,7 @@ class Link
    * $linkModel->createLink();
    * ```
    */
-  public function createLink(): bool
+  public function addLink(): bool
   {
     try {
       // Vérification que tous les champs requis sont renseignés
@@ -253,6 +255,47 @@ class Link
 
     } catch (PDOException $e) {
       throw new Exception("Erreur lors de la suppression du lien : " . $e->getMessage());
+    }
+  }
+
+  /**
+   * Check if a link exists
+   * 
+   * Check if a link exists in the database using the id property of the link object
+   * 
+   * @param int $id - the id of the link to check
+   * @return bool - return true if the link exists, false otherwise
+   * @throws Exception - throw an exception if an error occurs while checking if a link exists
+   * 
+   * @example
+   * ```php
+   * $db = Database::getInstance()->getConnection();
+   * $linkModel = new Link($db);
+   * $linkModel->id = 1;
+   * $linkModel->linkExists();
+   * ```
+   */
+  public function linkExists(int $id): bool
+  {
+    try {
+      // Vérification que l'ID du lien est renseigné
+      if (empty($id)) {
+        throw new Exception("L'ID du lien est obligatoire");
+      }
+
+      // Requête pour vérifier si un lien existe
+      $sql = "SELECT id FROM " . $this->table . " WHERE id = :id";
+      $stmt = $this->connexion->prepare($sql);
+      // Bind des paramètres
+      $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+      // Exécution de la requête
+      $stmt->execute();
+
+      // Retourner vrai si le lien existe
+      return $stmt->rowCount() > 0;
+
+    } catch (PDOException $e) {
+      throw new Exception("Erreur lors de la vérification de l'existence du lien : " . $e->getMessage());
     }
   }
 }

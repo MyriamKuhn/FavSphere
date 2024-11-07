@@ -63,7 +63,7 @@ try {
       $category = new Category($db);
 
       // On vérifie si la catégorie existe
-      if ($category->categoryExists($data->id)) {
+      if ($category->categoryExists($id)) {
 
         // On hydrate l'objet
         $category->id = $id;

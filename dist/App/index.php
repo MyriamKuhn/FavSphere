@@ -18,6 +18,18 @@ switch ($uri) {
   case '/app/deleteCategory':
     require_once __DIR__ . '/Controller/deleteCategory.php';
     break;
+  case '/app/links':
+    require_once __DIR__ . '/Controller/getLinks.php';
+    break;
+  case '/app/addLink':
+    require_once __DIR__ . '/Controller/addLink.php';
+    break;
+  case '/app/updateLink':
+    require_once __DIR__ . '/Controller/updateLink.php';
+    break;
+  case '/app/deleteLink':
+    require_once __DIR__ . '/Controller/deleteLink.php';
+    break;
   case '/app/key':
     require_once __DIR__ . '/Controller/getKey.php';
     break;
