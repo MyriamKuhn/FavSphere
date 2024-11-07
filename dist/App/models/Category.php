@@ -1,6 +1,5 @@
 <?php
-
-namespace App\models;
+namespace Models;
 
 use Exception;
 use PDO;
@@ -70,7 +69,7 @@ class Category
   {
     try {
       // Requête SQL pour récupérer toutes les catégories
-      $sql = "SELECT * FROM $this->table";
+      $sql = "SELECT * FROM " . $this->table;
       $stmt = $this->connexion->prepare($sql);
       $stmt->execute();
 
@@ -108,11 +107,11 @@ class Category
       }
 
       // Requête SQL pour insérer une nouvelle catégorie
-      $sql = "INSERT INTO $this->table (name, color) VALUE (:name, :color)";
+      $sql = "INSERT INTO " . $this->table . " (name, color) VALUE (:name, :color)";
       $stmt = $this->connexion->prepare($sql);
       // Lier les paramètres
-      $stmt->bindParam(':name', $this->name, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':color', $this->color, $this->connexion::PARAM_STR);
+      $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+      $stmt->bindParam(':color', $this->color, PDO::PARAM_STR);
 
       // Exécuter la requête
       $stmt->execute();
@@ -158,12 +157,12 @@ class Category
       }
 
       // Requête SQL pour mettre à jour une catégorie
-      $sql = "UPDATE $this->table SET name = :name, color = :color WHERE id = :id";
+      $sql = "UPDATE " . $this->table . " SET name = :name, color = :color WHERE id = :id";
       $stmt = $this->connexion->prepare($sql);
       // Lier les paramètres
-      $stmt->bindParam(':name', $this->name, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':color', $this->color, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':id', $this->id, $this->connexion::PARAM_INT);
+      $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
+      $stmt->bindParam(':color', $this->color, PDO::PARAM_STR);
+      $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
       // Exécuter la requête
       $stmt->execute();
 
@@ -200,10 +199,10 @@ class Category
       }
 
       // Requête SQL pour supprimer une catégorie
-      $sql = "DELETE FROM $this->table WHERE id = :id";
+      $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
       $stmt = $this->connexion->prepare($sql);
       // Lier les paramètres
-      $stmt->bindParam(':id', $this->id, $this->connexion::PARAM_INT);
+      $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
       // Exécuter la requête
       $stmt->execute();
 

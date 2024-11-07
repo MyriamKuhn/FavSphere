@@ -1,12 +1,12 @@
 <?php
 
-namespace App\models;
+namespace Models;
 
 use Exception;
 use PDO;
 use PDOException;
 
-class Links
+class Link
 {
   private PDO $connexion;
   private string $table = 'link';
@@ -39,7 +39,7 @@ class Links
    * @example
    * ```php
    * $db = Database::getInstance()->getConnection();
-   * $linkModel = new Links($db);
+   * $linkModel = new Link($db);
    * $linkModel->fk_user_id = 123;
    * $links = $linkModel->getLinks();
    * print_r($links);
@@ -76,12 +76,12 @@ class Links
       }
 
       $sql = "SELECT link.*, category.name AS category_name
-              FROM $this->table AS link
+              FROM " . $this->table . " AS link
               INNER JOIN category ON link.fk_category_id = category.id
               WHERE link.fk_user_id = :fk_user_id";
 
       $stmt = $this->connexion->prepare($sql);
-      $stmt->bindParam(':fk_user_id', $this->fk_user_id, $this->connexion::PARAM_INT);
+      $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
       $stmt->execute();
 
       return $stmt->fetchAll();
@@ -132,14 +132,14 @@ class Links
       }
 
       // Requête pour insérer un lien dans la base de données
-      $sql = "INSERT INTO $this->table (url, title, description, fk_category_id, fk_user_id) VALUE (:url, :title, :description, :fk_category_id, :fk_user_id)";
+      $sql = "INSERT INTO " . $this->table . " (url, title, description, fk_category_id, fk_user_id) VALUE (:url, :title, :description, :fk_category_id, :fk_user_id)";
       $stmt = $this->connexion->prepare($sql);
       // Bind des paramètres
-      $stmt->bindParam(':url', $this->url, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':title', $this->title, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':description', $this->description, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':fk_category_id', $this->fk_category_id, $this->connexion::PARAM_INT);
-      $stmt->bindParam(':fk_user_id', $this->fk_user_id, $this->connexion::PARAM_INT);
+      $stmt->bindParam(':url', $this->url, PDO::PARAM_STR);
+      $stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
+      $stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
+      $stmt->bindParam(':fk_category_id', $this->fk_category_id, PDO::PARAM_INT);
+      $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
       // Exécution de la requête
       $stmt->execute();
 
@@ -196,15 +196,15 @@ class Links
       }
 
       // Requête pour mettre à jour un lien dans la base de données
-      $sql = "UPDATE $this->table SET url = :url, title = :title, description = :description, fk_category_id = :fk_category_id, fk_user_id = :fk_user_id WHERE id = :id";
+      $sql = "UPDATE " . $this->table . " SET url = :url, title = :title, description = :description, fk_category_id = :fk_category_id, fk_user_id = :fk_user_id WHERE id = :id";
       $stmt = $this->connexion->prepare($sql);
       // Bind des paramètres
-      $stmt->bindParam(':url', $this->url, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':title', $this->title, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':description', $this->description, $this->connexion::PARAM_STR);
-      $stmt->bindParam(':fk_category_id', $this->fk_category_id, $this->connexion::PARAM_INT);
-      $stmt->bindParam(':fk_user_id', $this->fk_user_id, $this->connexion::PARAM_INT);
-      $stmt->bindParam(':id', $this->id, $this->connexion::PARAM_INT);
+      $stmt->bindParam(':url', $this->url, PDO::PARAM_STR);
+      $stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
+      $stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
+      $stmt->bindParam(':fk_category_id', $this->fk_category_id, PDO::PARAM_INT);
+      $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
+      $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
       // Exécution de la requête
       $stmt->execute();
 
@@ -241,10 +241,10 @@ class Links
       }
 
       // Requête pour supprimer un lien
-      $sql = "DELETE FROM $this->table WHERE id = :id";
+      $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
       $stmt = $this->connexion->prepare($sql);
       // Bind des paramètres
-      $stmt->bindParam(':id', $this->id, $this->connexion::PARAM_INT);
+      $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
       // Exécution de la requête
       $stmt->execute();
 
@@ -256,4 +256,3 @@ class Links
     }
   }
 }
-

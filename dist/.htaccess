@@ -1,9 +1,0 @@
-# Bloque l'accès aux fichiers .htaccess et .htpasswd
-<Files ".ht*">
-    Require all denied
-</Files>
-
-# Bloquer l'accès au fichier .env
-<Files ".env">
-    Require all denied
-</Files>

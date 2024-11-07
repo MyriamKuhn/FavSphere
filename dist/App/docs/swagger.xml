@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: API des Catégories
+  version: "1.0.0"
+  description: Une API pour récupérer les catégories
+
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Veuillez entrer votre token Bearer"
+
+security:
+  - Bearer: []
+
+paths:
+  /app/categories:
+    get:
+      summary: Récupérer toutes les catégories
+      operationId: getCategories
+      tags:
+        - Categories
+      security:
+        - Bearer: []  # Cette ligne indique que cette route nécessite un Bearer token
+      responses:
+        '200':
+          description: Liste des catégories récupérée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        color:
+                          type: string
+        '404':
+          description: Aucune catégorie trouvée
+        '500':
+          description: Erreur interne du serveur
