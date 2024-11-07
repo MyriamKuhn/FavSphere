@@ -5,6 +5,9 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 
+RewriteCond %{REQUEST_URI} ^/app/$
+RewriteRule ^ /app/swagger/ [L,R=301]
+
 # Bloque l'accès aux fichiers .htaccess et .htpasswd
 <Files ".ht*">
     Require all denied

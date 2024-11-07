@@ -6,8 +6,11 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\ExpiredException;
 use Exception;
 use Dotenv\Dotenv;
+use config\Database;
+use Models\User;
 
 
 class JwtMiddleware
@@ -47,73 +50,24 @@ class JwtMiddleware
    */
   public function generateToken(int $userId, string $username): string
   {
+    // Vérifier que l'ID est un entier valide
+    if (!filter_var($userId, FILTER_VALIDATE_INT)) {
+      throw new Exception("ID utilisateur invalide");
+    }
+    // Nettoyage des données
+    $safeUsername = trim(htmlentities($username, ENT_QUOTES, 'UTF-8'));
+
+    // Créer le payload du token
     $payload = [
       "iss" => $_SERVER['SERVER_NAME'],  // Issuer (émetteur) du token
       'aud' => $_SERVER['SERVER_NAME'],  // Audience (destinataire) du token
       "iat" => time(),  // Issued at time (date de création du token)
       "exp" => time() + 3600, // Token expiration time (1 hour)
       "userId" => $userId,  // User ID
-      "username" => $username  // Username
+      "username" => $safeUsername  // Username
     ];
 
     return JWT::encode($payload, $this->secretKey, 'HS256');
-  }
-
-  /**
-   * Verify a JWT token
-   * 
-   * This function validates a JWT token.
-   * 
-   * @param string $token - the JWT token
-   * @return object - return the decoded token
-   * 
-   * @example
-   * ```php
-   * $jwtMiddleware = new JwtMiddleware();
-   * $token = $jwtMiddleware->generateToken(123, "john_doe");
-   * $decodedToken = $jwtMiddleware->validateToken($token);
-   * print_r($decodedToken);
-   * ```
-   */
-  public function verifyToken(string $token): object
-  {
-    try {
-      $decoded = JWT::decode($token, new Key($this->secretKey, 'HS256'));
-      return $decoded;
-    } catch (Exception $e) {
-      throw new Exception("Token invalide : " . $e->getMessage());
-    }
-  }
-
-  /**
-   * Get user information from a JWT token
-   * 
-   * This function extracts the user ID and username from a JWT token.
-   * 
-   * @param string $token - the JWT token
-   * @return array - returns an array with userId and username
-   * @throws Exception - throw an exception if the token is invalid
-   * 
-   * @example
-   * ```php
-   * $jwtMiddleware = new JwtMiddleware();
-   * $token = $jwtMiddleware->generateToken(123, "john_doe");
-   * $user = $jwtMiddleware->getUserInfo($token);
-   * echo $user['userId'];  // 123
-   * echo $user['username'];  // john_doe
-   * ```
-   */
-  public function getUserInfo(string $token): array
-  {
-    try {
-      $decoded = $this->verifyToken($token);
-      return [
-        'userId' => $decoded->userId,
-        'username' => $decoded->username
-      ];
-    } catch (Exception $e) {
-      throw new Exception("Impossible de récupérer les informations de l'utilisateur : " . $e->getMessage());
-    }
   }
 
   /**
@@ -144,7 +98,31 @@ class JwtMiddleware
       try {
         // Décoder le token
         $decoded = JWT::decode($token, new Key($this->secretKey, 'HS256'));
+
+        // Vérifier si l'utilisateur existe dans la base de données
+        $db = Database::getInstance()->getConnection();
+        $user = new User($db);
+
+        // Assigner les valeurs de l'utilisateur depuis le token
+        $user->id = $decoded->userId;
+        $user->username = $decoded->username;
+
+        // Vérifier si l'utilisateur existe
+        if (!$user->userExists()) {
+          throw new Exception("Utilisateur introuvable.");
+        }
+
+        // Ajout des informations utilisateur au token décodé
+        $decoded->user = [
+          'id' => $user->id,
+          'username' => $user->username,
+        ];
+
         return $decoded; // Retourne les données du token si validé
+
+      } catch (ExpiredException $e) {
+        throw new Exception("Accès refusé. Token expiré : " . $e->getMessage());
+
       } catch (Exception $e) {
         // Si le token est invalide, lancer une exception
         throw new Exception("Accès refusé. Token invalide : " . $e->getMessage());

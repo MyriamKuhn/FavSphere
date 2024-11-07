@@ -7,4 +7,4 @@ Autoload::register();
 use Middleware\JwtMiddleware;
 
 $jwtMiddleware = new JwtMiddleware();
-echo $jwtMiddleware->generateToken(123, "john");
+echo $jwtMiddleware->generateToken(1, "Myriam");

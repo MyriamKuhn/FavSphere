@@ -25,9 +25,9 @@ class Category
   }
 
   /**
-   * Get all categories
+   * Get all categories for one user
    * 
-   * Fetch all categories from the database
+   * Fetch all categories from the database for a specific user using the fk_user_id property of the category object
    * 
    * @return array - return an array of all categories from the database
    * @throws Exception - throw an exception if an error occurs while fetching categories
@@ -71,6 +71,7 @@ class Category
       // Requête SQL pour récupérer toutes les catégories
       $sql = "SELECT * FROM " . $this->table;
       $stmt = $this->connexion->prepare($sql);
+      // Exécuter la requête
       $stmt->execute();
 
       // Récupérer toutes les catégories
@@ -98,12 +99,15 @@ class Category
    * $categoryModel->createCategory();
    * ```
    */
-  public function createCategory(): bool
+  public function addCategory(): bool
   {
     try {
-      // Vérifier si le nom de la catégorie est vide
+      // Vérifier si le champs ne sont pas vides
       if (empty($this->name)) {
         throw new Exception("Le nom de la catégorie est obligatoire");
+      }
+      if (empty($this->color)) {
+        throw new Exception("La couleur de la catégorie est obligatoire");
       }
 
       // Requête SQL pour insérer une nouvelle catégorie
@@ -112,7 +116,6 @@ class Category
       // Lier les paramètres
       $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
       $stmt->bindParam(':color', $this->color, PDO::PARAM_STR);
-
       // Exécuter la requête
       $stmt->execute();
 
@@ -211,6 +214,41 @@ class Category
 
     } catch (PDOException $e) {
       throw new Exception("Erreur lors de la suppression de la catégorie : " . $e->getMessage());
+    }
+  }
+
+  /**
+   * Check if a category exists
+   * 
+   * Check if a category exists in the database using the id property of the category object
+   * 
+   * @param int $id - the category ID
+   * @return bool - return true if the category exists, false otherwise
+   * 
+   * @example
+   * ```php
+   * $db = Database::getInstance()->getConnection();
+   * $categoryModel = new Category($db);
+   * $categoryModel->id = 1;
+   * $categoryModel->categoryExists(1);
+   * ```
+   */
+  public function categoryExists(int $id): bool
+  {
+    try {
+      // Requête SQL pour vérifier si la catégorie existe
+      $sql = "SELECT id FROM " . $this->table . " WHERE id = :id LIMIT 1";
+      $stmt = $this->connexion->prepare($sql);
+      // Lier les paramètres
+      $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+      // Exécuter la requête
+      $stmt->execute();
+
+      // Retourner vrai si la catégorie existe
+      return $stmt->rowCount() > 0;
+
+    } catch (PDOException $e) {
+      throw new Exception("Erreur lors de la vérification de l'existence de la catégorie : " . $e->getMessage());
     }
   }
 }

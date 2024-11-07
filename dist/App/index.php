@@ -9,6 +9,15 @@ switch ($uri) {
   case '/app/categories':
     require_once __DIR__ . '/Controller/getCategories.php';
     break;
+  case '/app/addCategory':
+    require_once __DIR__ . '/Controller/addCategory.php';
+    break;
+  case '/app/updateCategory':
+    require_once __DIR__ . '/Controller/updateCategory.php';
+    break;
+  case '/app/deleteCategory':
+    require_once __DIR__ . '/Controller/deleteCategory.php';
+    break;
   case '/app/key':
     require_once __DIR__ . '/Controller/getKey.php';
     break;

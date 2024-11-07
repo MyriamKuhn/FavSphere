@@ -9,7 +9,7 @@ use config\Database;
 use Middleware\JwtMiddleware;
 
 //Headers requis pour le retour HTTP
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: " . $_SERVER['SERVER_NAME']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
@@ -21,9 +21,6 @@ try {
 
   // Vérifier le token JWT
   $decoded = $jwtMiddleware->checkJWT();
-
-  // Vous pouvez maintenant utiliser les données décodées
-  // par exemple, $decoded->userId et $decoded->username
 
   //On vérifie la méthode HTTP
   if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -52,8 +49,13 @@ try {
     http_response_code(405);
     echo json_encode(["message" => "La méthode n'est pas autorisée"]);
   }
+
+} catch (Throwable $t) {
+  // Si une erreur survient
+  http_response_code(500); 
+  echo json_encode(["message" => "Erreur interne. " . $t->getMessage()]);
 } catch (Exception $e) {
   // Si le JWT est invalide ou absent
-  http_response_code(401); // Unauthorized
+  http_response_code(401); 
   echo json_encode(["message" => "Accès refusé. " . $e->getMessage()]);
 }

@@ -60,7 +60,7 @@ class User
       }
 
       // Requête pour vérifier si l'utilisateur existe
-      $sql = "SELECT * FROM " . $this->table . " WHERE username = :username LIMIT 1";
+      $sql = "SELECT * FROM " . $this->table . " WHERE user = :username LIMIT 1";
       $stmt = $this->connexion->prepare($sql);
       // Bind des paramètres
       $stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
@@ -114,7 +114,7 @@ class User
       }
 
       // Requête pour insérer un nouvel utilisateur
-      $sql = "INSERT INTO " . $this->table . " (username, password) VALUE (:username, :password)";
+      $sql = "INSERT INTO " . $this->table . " (user, password) VALUE (:username, :password)";
       $stmt = $this->connexion->prepare($sql);
       // Bind des paramètres
       $stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
@@ -166,7 +166,7 @@ class User
       }
 
       // Requête pour mettre à jour un utilisateur
-      $sql = "UPDATE " . $this->table . " SET username = :username, password = :password WHERE id = :id";
+      $sql = "UPDATE " . $this->table . " SET user = :username, password = :password WHERE id = :id";
       $stmt = $this->connexion->prepare($sql);
       // Bind des paramètres
       $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
@@ -222,6 +222,52 @@ class User
 
     } catch (PDOException $e) {
       throw new Exception("Erreur lors de la suppression de l'utilisateur : " . $e->getMessage());
+    }
+  }
+
+  /**
+   * Check if a user exists
+   * 
+   * This function checks if a user exists in the database using the id property of the user object.
+   * 
+   * @return bool - return true if the user exists, false otherwise
+   * @throws Exception - throw an exception if an error occurs while checking if a user exists
+   * 
+   * @example
+   * ```php
+   * $db = Database::getInstance()->getConnection();
+   * $userModel = new User($db);
+   * $userModel->id = 1;
+   * $userModel->username = "john_doe";
+   * $userExists = $userModel->userExists();
+   * echo $userExists;
+   * ```
+   */
+  public function userExists(): bool
+  {
+    try {
+      // Vérification des champs requis
+      if (empty($this->id)) {
+        throw new Exception("L'ID de l'utilisateur est requis");
+      }
+      if (empty($this->username)) {
+        throw new Exception("Le nom de l'utilisateur est requis");
+      }
+
+      // Requête pour vérifier si l'utilisateur existe
+      $sql = "SELECT * FROM " . $this->table . " WHERE id = :id AND user = :username LIMIT 1";
+      $stmt = $this->connexion->prepare($sql);
+      // Bind des paramètres
+      $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+      $stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+      // Exécution de la requête
+      $stmt->execute();
+
+      // Retourner vrai si l'utilisateur existe
+      return $stmt->rowCount() > 0;
+
+    } catch (PDOException $e) {
+      throw new Exception("Erreur lors de la vérification de l'existence de l'utilisateur : " . $e->getMessage());
     }
   }
 }
