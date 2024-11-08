@@ -83,5 +83,11 @@ class Utils
   {
     return !preg_match('/^#[0-9A-Fa-f]{6}$/', $color);
   }
+  
+ // Méthode pour vérifier un format d'URL
+  public static function checkUrl(string $url): bool
+  {
+    return !filter_var($url, FILTER_VALIDATE_URL);
+  }
 
 }
