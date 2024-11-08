@@ -16,6 +16,13 @@ class UserController
   private string $method;
   private JwtMiddleware $jwtMiddleware;
 
+  /**
+   * Constructor of the class
+   * 
+   * @return void
+   * @throws Exception if an error occurs
+   * @throws Throwable if an error occurs
+   */
   public function __construct()
   {
     try {
@@ -32,6 +39,12 @@ class UserController
     }
   }
 
+  /**
+   * Method to handle the request
+   * 
+   * @param string $uri
+   * @return void
+   */
   public function handleRequest(string $uri): void
   {
     $this->method = $_SERVER['REQUEST_METHOD'];
@@ -46,6 +59,11 @@ class UserController
     }
   }
 
+  /**
+   * Method to log in a user
+   * 
+   * @return void
+   */
   private function login(): void
   {
     try {

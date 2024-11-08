@@ -17,6 +17,13 @@ class LinkController extends MainController
   private string $method;
   private int $userId;
 
+  /**
+   * Constructor of the class LinkController
+   * 
+   * @return void
+   * @throws Exception 
+   * @throws Throwable 
+   */
   public function __construct()
   {
     try {
@@ -34,6 +41,12 @@ class LinkController extends MainController
     }
   }
 
+  /**
+   * Method to handle the request
+   * 
+   * @param string $uri
+   * @return void
+   */
   public function handleRequest(string $uri): void
   {
     $this->method = $_SERVER['REQUEST_METHOD'];
@@ -57,6 +70,11 @@ class LinkController extends MainController
     }
   }
 
+  /**
+   * Method to get all links
+   * 
+   * @return void
+   */
   private function getLinks()
   {
     try {
@@ -88,6 +106,11 @@ class LinkController extends MainController
     }
   }
 
+  /**
+   * Method to add a link
+   * 
+   * @return void
+   */
   private function addLink()
   {
     try {
@@ -134,6 +157,11 @@ class LinkController extends MainController
     }
   }
 
+  /**
+   * Method to update a link
+   * 
+   * @return void
+   */
   private function updateLink()
   {
     try {
@@ -188,6 +216,11 @@ class LinkController extends MainController
     }
   }
 
+  /**
+   * Method to delete a link
+   * 
+   * @return void
+   */
   private function deleteLink()
   {
     try {

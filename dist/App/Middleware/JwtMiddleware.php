@@ -17,6 +17,18 @@ class JwtMiddleware
 {
   private string $secretKey;
 
+  /**
+   * JwtMiddleware constructor.
+   * 
+   * This constructor loads the environment variables and checks if the JWT secret key is defined.
+   * 
+   * @throws Exception - throw an exception if the JWT secret key is missing or empty
+   * 
+   * @example
+   * ```php
+   * $jwtMiddleware = new JwtMiddleware();
+   * ```
+   */
   public function __construct()
   {
     // Charger les variables d'environnement

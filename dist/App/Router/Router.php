@@ -17,6 +17,11 @@ class Router
     '/app/login' => 'UserController',
   ];
 
+  /**
+   * Method to route the request to the right controller
+   *
+   * @return void
+   */
   public function route()
   {
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

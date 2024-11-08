@@ -13,6 +13,13 @@ class CategoryController extends MainController
   private Category $category;
   private string $method;
 
+  /**
+   * Constructeur of the class CategoryController
+   * 
+   * @return void
+   * @throws Exception if an error occurs
+   * @throws Throwable if an error occurs
+   */
   public function __construct()
   {
     try {
@@ -28,6 +35,14 @@ class CategoryController extends MainController
     }
   }
 
+  /**
+   * Handle the request
+   * 
+   * This method will handle the request and call the appropriate method
+   * 
+   * @param string $uri
+   * @return void
+   */
   public function handleRequest(string $uri): void
   {
     $this->method = $_SERVER['REQUEST_METHOD'];
@@ -51,6 +66,13 @@ class CategoryController extends MainController
     }
   }
 
+  /**
+   * Get all categories
+   * 
+   * This method will get all categories from the database
+   * 
+   * @return void
+   */
   private function getCategories()
   {
     try {
@@ -70,6 +92,13 @@ class CategoryController extends MainController
     }
   }
 
+  /**
+   * Add a category
+   * 
+   * This method will add a category to the database
+   * 
+   * @return void
+   */
   private function addCategory()
   {
     try {
@@ -103,6 +132,13 @@ class CategoryController extends MainController
     }
   }
 
+  /**
+   * Update a category
+   * 
+   * This method will update a category in the database
+   * 
+   * @return void
+   */
   private function updateCategory()
   {
     try {
@@ -143,6 +179,13 @@ class CategoryController extends MainController
     }
   }
 
+  /**
+   * Delete a category
+   * 
+   * This method will delete a category from the database
+   * 
+   * @return void
+   */
   private function deleteCategory()
   {
     try {

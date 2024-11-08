@@ -828,13 +828,6 @@ components:
           type: string
           description: "Category name"
           example: "Travail"
-    User:
-      type: object
-      properties:
-        token:
-          type: string
-          description: "JWT token"
-          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.4TJok"
   securitySchemes:
     Bearer:
       type: http

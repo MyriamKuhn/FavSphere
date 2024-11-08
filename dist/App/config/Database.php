@@ -11,6 +11,14 @@ use PDOException;
 
 class Database{
 
+  /**
+   * Database constructor
+   * 
+   * Load the environment variables
+   * 
+   * @return void
+   * 
+   */
   public function __construct()
   {
     $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
@@ -20,7 +28,14 @@ class Database{
   private ?PDO $connexion = null;
   private static ?self $instance = null;
 
-  // instance de la classe Database (singleton)
+  /**
+   * Get the instance of the Database class
+   * 
+   * It's a singleton pattern to avoid multiple connections to the database
+   * 
+   * @return self
+   * 
+   */
   public static function getInstance(): self 
   {
     if (is_null(self::$instance)) {
@@ -30,7 +45,12 @@ class Database{
     return self::$instance;
   }
 
-  // getter pour la connexion
+  /**
+   * Get the connection to the database
+   * 
+   * @return PDO
+   * @throws Exception if the connection to the database fails
+   */
   public function getConnection(): PDO
   {
     if (is_null($this->connexion)) {
