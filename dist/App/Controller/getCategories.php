@@ -1,19 +1,9 @@
 <?php
 
-// Chargement de l'autoloader
-require_once __DIR__.'/../Autoload.php';
-Autoload::register();
-
 use Models\Category;
 use config\Database;
 use Middleware\JwtMiddleware;
-
-//Headers requis pour le retour HTTP
-header("Access-Control-Allow-Origin: " . $_SERVER['SERVER_NAME']);
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+use Tools\Utils;
 
 try {
   //On instancie le Middleware
@@ -35,27 +25,17 @@ try {
     
     // Vérification s'il y a au moins une catégorie
     if ($categories) {
-      // Envoi du code réponse 200 OK
-      http_response_code(200);
-      //On encode en json et on envoie
-      echo json_encode(['categories' => $categories]);
+      Utils::sendResponse(200, json_encode(['categories' => $categories]), 'GET');
     } else {
-      //On envoie le code réponse 404 Not found
-      http_response_code(404);
-      echo json_encode(["message" => "Aucune catégorie trouvée"]);
+      Utils::sendResponse(404, "Aucune catégorie trouvée", 'GET');
     }
   } else {
-    // Méthode HTTP non autorisée
-    http_response_code(405);
-    echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+    Utils::sendResponse(405, "La méthode n'est pas autorisée", 'GET');
   }
 
 } catch (Throwable $t) {
-  // Si une erreur survient
-  http_response_code(500); 
-  echo json_encode(["message" => "Erreur interne. " . $t->getMessage()]);
+  Utils::sendResponse(500, "Erreur interne du serveur. " . $t->getMessage(), 'GET');
+
 } catch (Exception $e) {
-  // Si le JWT est invalide ou absent
-  http_response_code(401); 
-  echo json_encode(["message" => "Accès refusé. " . $e->getMessage()]);
+  Utils::sendResponse(401, "Accès refusé. " . $e->getMessage(), 'GET');
 }
