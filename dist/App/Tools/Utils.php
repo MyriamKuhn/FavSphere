@@ -90,4 +90,10 @@ class Utils
     return !filter_var($url, FILTER_VALIDATE_URL);
   }
 
+  // Méthode pour vérifier un format de mot de passe (au moins 15 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial)
+  public static function checkPassword(string $password): bool
+  {
+    return !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{15,}$/', $password);
+  }
+
 }

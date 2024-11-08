@@ -14,7 +14,7 @@ class Router
     '/app/addLink' => 'LinkController',
     '/app/updateLink' => 'LinkController',
     '/app/deleteLink' => 'LinkController',
-    '/app/key' => 'getKey',
+    '/app/login' => 'UserController',
   ];
 
   public function route()

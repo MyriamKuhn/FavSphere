@@ -48,7 +48,7 @@ class User
    * echo $isAuthenticated;
    * ```
    */
-  public function authenticate(): bool
+  public function login(): bool
   {
     try {
       // Vérification des champs requis
@@ -72,7 +72,7 @@ class User
 
       // Si l'utilisateur existe et que le mot de passe est correct
       if ($row && password_verify($this->password, $row['password'])) {
-        return true; 
+        return $row['id'];
       } else {
       // Si l'utilisateur n'existe pas ou le mot de passe est incorrect
       return false;
