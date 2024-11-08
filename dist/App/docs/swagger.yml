@@ -1,0 +1,836 @@
+openapi: 3.0.3
+info:
+  title: FavSphere API
+  description: |-
+    The FavSphere API enables users to save, organize and comment on their favorite links in customized categories. 
+    
+    Thanks to link management features, users can structure their favorites, group them together, and annotate them for easy, organized access. 
+    
+    This API uses JWT tokens to secure exchanges, ensuring that only authorized people can access data. 
+    
+    It is designed for private use, with centralized user database management.
+
+    Some useful links:
+    - [The FavSphere repository](https://github.com/MyriamKuhn/FavSphere)
+    - [The FavSphere website](https://favsphere.myriamkuhn.com)
+  version: 1.0.0
+servers:
+  - url: http://favsphere.local/app/
+tags:
+  - name: category
+    description: Everything you need to manage the categories
+  - name: link
+    description: Everything you need to manage the links
+  - name: user
+    description: Operations about user
+paths:
+  /categories:
+    get:
+      tags:
+        - category
+      summary: Retrieve the list of categories
+      description: Get a list of all available categories
+      operationId: getCategories
+      responses:
+        '200':
+          description: Successful operation - list of categories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+        '404':
+          description: No category found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Aucune catégorie trouvée"
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "La méthode n'est pas autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+      security:
+        - Bearer: []
+  /addCategory:
+    post:
+      tags:
+        - category
+      summary: Add a new category
+      description: Add a new category to the list
+      operationId: addCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - color
+              properties:
+                name:
+                  type: string
+                  description: "Category name"
+                  example: "Travail"
+                color:
+                  type: string
+                  description: "Color associated with category"
+                  example: "#FF5733"
+      responses:
+        '201':
+          description: Category successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Catégorie ajoutée avec succès"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+      security:
+        - Bearer: []
+  /updateCategory:
+    put:
+      tags:
+        - category
+      summary: Modify a category
+      description: Modify the name or color of a category
+      operationId: updateCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - name
+                - color
+              properties:
+                id:
+                  type: integer
+                  description: "Category ID"
+                  example: 1
+                name:
+                  type: string
+                  description: "Category name"
+                  example: "Travail"
+                color:
+                  type: string
+                  description: "Color associated with category"
+                  example: "#FF5733"
+      responses:
+        '200':
+          description: Category successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Catégorie modifiée avec succès"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "La catégorie n'existe pas"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+      security:
+        - Bearer: []
+  /deleteCategory:
+    delete:
+      tags:
+        - category
+      summary: Delete a category
+      description: Delete a category from the list
+      operationId: deleteCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: "Category ID"
+                  example: 1
+      responses:
+        '200':
+          description: Category successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "La catégorie a été supprimée avec succès."
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "La catégorie n'existe pas"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+        '503':
+          description: Category can not be deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Impossible de supprimer la catégorie."
+      security:
+        - Bearer: []
+  /links:
+    get:
+      tags:
+        - link
+      summary: Retrieve the list of links for a user
+      description: Get a list of all available links for a user
+      operationId: getLinks
+      responses:
+        '200':
+          description: Successful operation - list of categories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+        '404':
+          description: No link found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Aucun lien trouvé"
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "La méthode n'est pas autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+      security:
+        - Bearer: []
+  /addLink:
+    post:
+      tags:
+        - link
+      summary: Add a new link for a user
+      description: Add a new link to the list of links for a user
+      operationId: addLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - title
+                - description
+                - fk_category_id
+                - fk_user_id
+              properties:
+                url:
+                  type: string
+                  description: "URL of the link"
+                  example: "https://www.google.com"
+                title:
+                  type: string
+                  description: "Title of the link"
+                  example: "Google"
+                description:
+                  type: string
+                  description: "Description of the link"
+                  example: "Le meilleur moteur de recherche"
+                fk_category_id:
+                  type: integer
+                  description: "Category ID"
+                  example: 1
+                fk_user_id:
+                  type: integer
+                  description: "User ID"
+                  example: 1
+      responses:
+        '201':
+          description: Link successfully added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Lien ajouté avec succès"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+      security:
+        - Bearer: []
+  /updateLink:
+    put:
+      tags:
+        - link
+      summary: Modify a link
+      description: Modify the URL, title, description or the category of a link
+      operationId: updateLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - url
+                - title
+                - description
+                - fk_category_id
+                - fk_user_id
+              properties:
+                id:
+                  type: integer
+                  description: "Link ID"
+                  example: 1
+                url:
+                  type: string
+                  description: "Link URL"
+                  example: "https://www.google.com"
+                title:
+                  type: string
+                  description: "Link title"
+                  example: "Google"
+                description:
+                  type: string
+                  description: "Link description"
+                  example: "Le meilleur moteur de recherche"
+                fk_category_id:
+                  type: integer
+                  description: "Category ID"
+                  example: 1
+                fk_user_id:
+                  type: integer
+                  description: "User ID"
+                  example: 1
+      responses:
+        '200':
+          description: Link successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Lien modifié avec succès"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Le lien n'existe pas"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+      security:
+        - Bearer: []
+  /deleteLink:
+    delete:
+      tags:
+        - link
+      summary: Delete a link
+      description: Delete a link from the list
+      operationId: deleteLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: "Link ID"
+                  example: 1
+      responses:
+        '200':
+          description: Link successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Le lien a été supprimé avec succès."
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Missing or invalid JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. JWT manquant ou invalide"
+        '404':
+          description: Link not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Le lien n'existe pas"
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+        '503':
+          description: Link can not be deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Impossible de supprimer le lien."
+      security:
+        - Bearer: []
+  /login:
+    post:
+      tags:
+        - user
+      summary: Login to the application
+      description: Login to the application with email and password
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  description: "Username"
+                  example: "user"
+                password:
+                  type: string
+                  description: "Password in clear text with a minimum of 15 characters, including at least one uppercase letter, one lowercase letter, one number and one special character"
+                  example: "password"
+      responses:
+        '200':
+          description: Successful operation - connected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: array
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.4TJok"
+        '400':
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Données incorrectes ou manquantes."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Accès refusé. Nom d'utilisateur ou mot de passe incorrect."
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Méthode non autorisée"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Erreur interne du serveur"
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Category ID"
+          example: 1
+        name:
+          type: string
+          description: "Category name"
+          example: "Travail"
+        color:
+          type: string
+          description: "Color associated with category"
+          example: "#FF5733"
+    Link:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Link ID"
+          example: 1
+        url:
+          type: string
+          description: "Link URL"
+          example: "https://www.google.com"
+        title:
+          type: string
+          description: "Link title"
+          example: "Google"
+        description:
+          type: string
+          description: "Link description"
+          example: "Le meilleur moteur de recherche"
+        fk_category_id:
+          type: integer
+          description: "Category ID"
+          example: 1
+        fk_user_id:
+          type: integer
+          description: "User ID"
+          example: 1
+        category_name:
+          type: string
+          description: "Category name"
+          example: "Travail"
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Please enter your Bearer token"
