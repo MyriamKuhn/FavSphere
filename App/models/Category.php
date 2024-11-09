@@ -13,6 +13,7 @@ class Category
   public int $id;
   public string $name;
   public string $color;
+  public int $fk_user_id;
 
   /**
    * Category constructor - create a database connection
@@ -49,18 +50,21 @@ class Category
    *             [id] => 1
    *             [name] => "Technology"
    *             [color] => "#FF0000"
+   *             [fk_user_id] => 1
    *         )
    *     [1] => Array
    *         (
    *             [id] => 2
    *             [name] => "Science"
    *             [color] => "#FF0000"
+   *             [fk_user_id] => 1
    *         )
    *     [2] => Array
    *         (
    *             [id] => 3
    *             [name] => "Arts"
    *             [color] => "#FF0000"
+   *             [fk_user_id] => 1
    *         )
    * )
    * ```
@@ -69,8 +73,10 @@ class Category
   {
     try {
       // Requête SQL pour récupérer toutes les catégories
-      $sql = "SELECT * FROM " . $this->table;
+      $sql = "SELECT * FROM " . $this->table . " WHERE fk_user_id = :fk_user_id";
       $stmt = $this->connexion->prepare($sql);
+      // Liaison des paramètres
+      $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
       // Exécuter la requête
       $stmt->execute();
 
@@ -96,6 +102,7 @@ class Category
    * $categoryModel = new Category($db);
    * $categoryModel->name = "Technology";
    * $categoryModel->color = "#FF0000";
+   * $categoryModel->fk_user_id = 1;
    * $categoryModel->createCategory();
    * ```
    */
@@ -111,11 +118,12 @@ class Category
       }
 
       // Requête SQL pour insérer une nouvelle catégorie
-      $sql = "INSERT INTO " . $this->table . " (name, color) VALUE (:name, :color)";
+      $sql = "INSERT INTO " . $this->table . " (name, color, fk_user_id) VALUE (:name, :color, :fk_user_id)";
       $stmt = $this->connexion->prepare($sql);
       // Lier les paramètres
       $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
       $stmt->bindParam(':color', $this->color, PDO::PARAM_STR);
+      $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
       // Exécuter la requête
       $stmt->execute();
 
@@ -142,6 +150,7 @@ class Category
    * $categoryModel->id = 1;
    * $categoryModel->name = "Technology";
    * $categoryModel->color = "#FF0000";
+   * $categoryModel->fk_user_id = 1;
    * $categoryModel->updateCategory();
    * ```
    */
@@ -160,11 +169,12 @@ class Category
       }
 
       // Requête SQL pour mettre à jour une catégorie
-      $sql = "UPDATE " . $this->table . " SET name = :name, color = :color WHERE id = :id";
+      $sql = "UPDATE " . $this->table . " SET name = :name, color = :color, fk_user_id = :fk_user_id WHERE id = :id";
       $stmt = $this->connexion->prepare($sql);
       // Lier les paramètres
       $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
       $stmt->bindParam(':color', $this->color, PDO::PARAM_STR);
+      $stmt->bindParam(':fk_user_id', $this->fk_user_id, PDO::PARAM_INT);
       $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
       // Exécuter la requête
       $stmt->execute();
