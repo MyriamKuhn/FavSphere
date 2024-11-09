@@ -32,10 +32,10 @@ class User
    * The password is hashed in the database, so we use the password_verify function to compare 
    * the password entered by the user with the hashed password in the database.
    * 
-   * If the user exists and the password is correct, the function returns true.
+   * If the user exists and the password is correct, the function returns the userId.
    * If the user does not exist or the password is incorrect, the function returns false.
    * 
-   * @return bool - return true if the user is authenticated, false otherwise
+   * @return bool|int - return false if the user does not exist or the password is incorrect, the user ID otherwise
    * @throws Exception - throw an exception if an error occurs while authenticating the user
    * 
    * @example
@@ -48,7 +48,7 @@ class User
    * echo $isAuthenticated;
    * ```
    */
-  public function login(): bool
+  public function login(): bool|int
   {
     try {
       // Vérification des champs requis

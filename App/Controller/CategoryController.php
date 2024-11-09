@@ -12,6 +12,7 @@ class CategoryController extends MainController
 {
   private Category $category;
   private string $method;
+  private int $userId;
 
   /**
    * Constructeur of the class CategoryController
@@ -28,6 +29,8 @@ class CategoryController extends MainController
       $db = Database::getInstance()->getConnection();
       // Instanciation de la classe Category
       $this->category = new Category($db);
+      // On récupère l'ID du user dans le token
+      $this->userId = $this->decoded->user['id'];
     } catch (Throwable $t) {
       Utils::sendResponse(500, "Erreur interne du serveur. " . $t->getMessage(), $_SERVER['REQUEST_METHOD']);
     } catch (Exception $e) {
@@ -76,6 +79,18 @@ class CategoryController extends MainController
   private function getCategories()
   {
     try {
+      // On sécurise l'ID du user
+      $userId = Utils::cleanInt($this->userId);
+
+      // On vérifie si l'ID est un entier et pas vide
+      if (Utils::isEmpty([$userId]) || Utils::secureInt($userId)) {
+        Utils::sendResponse(400, "Données incorrectes ou manquantes.", $this->method);
+        exit;
+      }
+
+      // On hydrate l'objet Category
+      $this->category->fk_user_id = $userId;
+
       //On récupère les catégories
       $categories = $this->category->getCategories();
       
@@ -108,9 +123,10 @@ class CategoryController extends MainController
       // Sécurisation des données reçues
       $name = Utils::secureData($data->name);
       $color = Utils::secureData($data->color);
+      $fk_user_id = Utils::cleanInt($this->userId);
 
       // On vérifie que les données nécessaires et valides sont présentes
-      if (Utils::isEmpty([$name, $color]) || Utils::checkLength($name, 3, 100) || Utils::checkHexColor($color)) {
+      if (Utils::isEmpty([$name, $color, $fk_user_id]) || Utils::checkLength($name, 3, 100) || Utils::checkHexColor($color) || Utils::secureInt($fk_user_id)) {
         Utils::sendResponse(400, "Données incorrectes ou manquantes.", $this->method);
         exit;
       }
@@ -118,6 +134,7 @@ class CategoryController extends MainController
       // On hydrate l'objet
       $this->category->name = $name;
       $this->category->color = $color;
+      $this->category->fk_user_id = $fk_user_id;
 
       // On tente d'ajouter la catégorie à la base de données
       if ($this->category->addCategory()) {
@@ -148,9 +165,10 @@ class CategoryController extends MainController
       $id = Utils::cleanInt($data->id);
       $name = Utils::secureData($data->name);
       $color = Utils::secureData($data->color);
+      $fk_user_id = Utils::cleanInt($this->userId);
 
       // On vérifie que les données nécessaires et valides sont présentes
-      if (Utils::isEmpty([$id, $name, $color]) || Utils::checkLength($name, 3, 100) || Utils::checkHexColor($color) || Utils::secureInt($id)) {
+      if (Utils::isEmpty([$id, $name, $color, $fk_user_id]) || Utils::checkLength($name, 3, 100) || Utils::checkHexColor($color) || Utils::secureInt($id) || Utils::secureInt($fk_user_id)) {
         Utils::sendResponse(400, "Données incorrectes ou manquantes.", $this->method);
         exit;
       }
@@ -162,6 +180,7 @@ class CategoryController extends MainController
         $this->category->id = $id;
         $this->category->name = $name;
         $this->category->color = $color;
+        $this->category->fk_user_id = $fk_user_id;
 
         // On tente de mettre à jour la catégorie dans la base de données
         if ($this->category->updateCategory()) {

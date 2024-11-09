@@ -797,6 +797,10 @@ components:
           type: string
           description: "Color associated with category"
           example: "#FF5733"
+        fk_user_id:
+          type: integer
+          description: "User ID"
+          example: 1
     Link:
       type: object
       properties:
