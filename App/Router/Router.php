@@ -32,9 +32,6 @@ class Router
       if ($controller === 'swagger') {
         require_once __DIR__ . '/../swagger/index.html';
         return;
-      } else if ($controller === 'getKey') {
-        require_once __DIR__ . '/../Controller/getKey.php';
-        return;
       } else {
         $controllerClass = '\\Controller\\' . $controller;
         $controllerInstance = new $controllerClass();
@@ -42,7 +39,7 @@ class Router
       }
     } else {
       http_response_code(404);
-      require __DIR__ . '/../errors/404.php';
+      require __DIR__ . '/../../errors/404.html';
       return;
     }
   }
