@@ -10,7 +10,7 @@ session_set_cookie_params([
 	'lifetime' => 3600,
 	'path' => '/',
 	'domain' => $_SERVER['SERVER_NAME'],
-	//'secure' => true,
+	'secure' => true,
 	'httponly' => true,
 	'samesite' => 'Strict',
 ]);
@@ -25,6 +25,11 @@ if (empty($_SESSION['csrf_token'])) {
 
 // Fonction de vérification CSRF
 function verifyCsrfToken() {
+  // Si la requête provient de Swagger 
+  if (strpos($_SERVER['REQUEST_URI'], '/app/swagger') !== false) {
+    return true; // On ne vérifie pas le token CSRF
+  }
+  // Sinon, vérifier le token CSRF comme d'habitude
   $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
   return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }

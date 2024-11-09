@@ -15,7 +15,7 @@ info:
     - [The FavSphere website](https://favsphere.myriamkuhn.com)
   version: 1.0.0
 servers:
-  - url: http://favsphere.local/app/
+  - url: https://favsphere.myriamkuhn.com/app/
 tags:
   - name: category
     description: Everything you need to manage the categories

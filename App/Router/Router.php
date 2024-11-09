@@ -30,7 +30,7 @@ class Router
       $controller = $this->routes[$uri];
 
       if ($controller === 'swagger') {
-        require_once __DIR__ . '/swagger/index.html';
+        require_once __DIR__ . '/../swagger/index.html';
         return;
       } else if ($controller === 'getKey') {
         require_once __DIR__ . '/../Controller/getKey.php';
