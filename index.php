@@ -26,7 +26,7 @@ if (empty($_SESSION['csrf_token'])) {
 // Fonction de vérification CSRF
 function verifyCsrfToken() {
   // Si la requête provient de Swagger 
-  if (strpos($_SERVER['REQUEST_URI'], '/app/swagger') !== false) {
+  if (strpos($_SERVER['REQUEST_URI'], '/app/') !== false) {
     return true; // On ne vérifie pas le token CSRF
   }
   // Sinon, vérifier le token CSRF comme d'habitude
