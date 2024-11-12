@@ -40,7 +40,7 @@ window.onload = function() {
         const message = document.getElementById('alertMessage');
         message.textContent = 'Aucune catégorie trouvée';
         message.classList.remove('visually-hidden');
-        document.getElementById('linksTable').classList.add('visually-hidden');
+        document.getElementById('categoryTable').classList.add('visually-hidden');
         document.getElementById('loading').classList.add('visually-hidden');
         $('#addModal').modal('show');
         return;
