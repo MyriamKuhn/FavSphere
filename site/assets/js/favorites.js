@@ -6,6 +6,14 @@
 import { secureInput } from '/site/assets/js/utils.js';
 
 
+/********************/
+
+/* VARIABLE GLOBALE */
+
+/********************/
+const apiBaseUrl = 'http://favsphere.local/app';
+
+
 /*************************/
 
 /* CHARGEMENT DE LA PAGE */
@@ -18,7 +26,7 @@ window.onload = function() {
   // Récupérer le sessionStorage
   if (sessionStorage.getItem('authToken')) {
     // Récupérer la liste des liens
-    fetch('http://favsphere.local/app/links', {
+    fetch(`${apiBaseUrl}/links`, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
@@ -174,7 +182,7 @@ window.onload = function() {
  * @throws {Error} - Erreur de récupération des catégories
  */
 function showCategories() {
-  fetch('http://favsphere.local/app/categories', {
+  fetch(`${apiBaseUrl}/categories`, {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
@@ -277,7 +285,7 @@ function showWarningModal(links, linkId) {
  * @throws {Error} - Erreur de suppression
  */
 function deleteLink(linkId) {
-  fetch(`http://favsphere.local/app/deleteLink`, {
+  fetch(`${apiBaseUrl}/deleteLink`, {
     method: 'DELETE',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
@@ -323,7 +331,7 @@ function deleteLink(linkId) {
  */
 document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
   // Récupérer la liste des catégories
-  fetch('http://favsphere.local/app/categories', {
+  fetch(`${apiBaseUrl}/categories`, {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
@@ -420,7 +428,7 @@ function addLink() {
   };
 
   // Envoyer les données au serveur
-  fetch('http://favsphere.local/app/addLink', {
+  fetch(`${apiBaseUrl}/addLink`, {
     method: 'POST',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
@@ -472,7 +480,7 @@ function showEditModal(links, linkId) {
   const categoryId = parseInt(link.fk_category_id);
   
   // Pré-remplir le select avec les catégories disponibles et sélection de la catégorie
-  fetch('http://favsphere.local/app/categories', {
+  fetch(`${apiBaseUrl}/categories`, {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
@@ -584,7 +592,7 @@ function editLink(linkId) {
   };
 
   // Envoyer les données au serveur
-  fetch('http://favsphere.local/app/addLink', {
+  fetch(`${apiBaseUrl}/addLink`, {
     method: 'PUT',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
