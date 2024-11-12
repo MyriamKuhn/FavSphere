@@ -141,7 +141,7 @@ form.addEventListener('submit', e => {
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   // Envoi des données du formulaire
-    fetch('http://favsphere.local/app/login', {
+    fetch('https://favsphere.myriamkuhn.com/app/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
