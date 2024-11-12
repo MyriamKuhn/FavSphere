@@ -11,3 +11,7 @@ RewriteRule ^ index.php [L]
 
 # Permet au serveur de pouvoir transmettre l'en-tête correctement à PHP
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+<IfModule mod_headers.c>
+Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.datatables.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.1.7/b-3.1.2/b-html5-3.1.2/r-3.0.3/datatables.min.css; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+</IfModule>
