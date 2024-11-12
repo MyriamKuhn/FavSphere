@@ -1,6 +1,6 @@
   <div class="d-flex flex-column">
     <div class="mb-5 text-center">
-      <a href="/"><img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50"></a>
+      <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50 logout" id="return">
     </div>
     <h1 class="text-uppercase mb-3 mt-5">Mentions légales</h1>
     <h2 class="text-uppercase mt-2">Informations générales</h2>
@@ -34,3 +34,13 @@
     <h2 class="text-uppercase mt-3">Loi applicable et juridiction compétente</h2>
     <p>Les présentes mentions légales sont régies par la législation en vigueur. En cas de litige, les tribunaux compétents seront ceux du lieu de résidence du Responsable du Site.</p>
   </div>
+
+  <script>
+    document.getElementById('return').addEventListener('click', () => {
+      if (sessionStorage.getItem('authToken')) {
+        location.replace('/favorites');
+      } else {
+        window.location.href = window.location.origin
+      }
+    });
+  </script>

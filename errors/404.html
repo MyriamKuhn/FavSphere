@@ -1,6 +1,6 @@
 <div class="d-flex flex-column">
   <div class="mb-5 text-center">
-    <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50">
+    <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50 logout" id="logout">
   </div>
 
   <h2 class="text-uppercase text-center fs-1 mb-5">Page non trouvée</h2>
@@ -14,6 +14,14 @@
 
 <script>
   document.getElementById('return').addEventListener('click', () => {
+    if (sessionStorage.getItem('authToken')) {
+      location.replace('/favorites');
+    } else {
+      window.location.href = window.location.origin
+    }
+  });
+
+  document.getElementById('logout').addEventListener('click', () => {
     if (sessionStorage.getItem('authToken')) {
       location.replace('/favorites');
     } else {

@@ -90,7 +90,7 @@ paths:
       tags:
         - category
       summary: Add a new category
-      description: Add a new category to the list
+      description: Add a new category to the list of categories for a user with a name and a color. The color must be in hexadecimal format. The user ID is automatically added to the category.
       operationId: addCategory
       requestBody:
         required: true
@@ -101,6 +101,7 @@ paths:
               required:
                 - name
                 - color
+                - fk_user_id
               properties:
                 name:
                   type: string
@@ -110,6 +111,10 @@ paths:
                   type: string
                   description: "Color associated with category"
                   example: "#FF5733"
+                fk_user_id:
+                  type: integer
+                  description: "User ID"
+                  example: 1
       responses:
         '201':
           description: Category successfully added
@@ -168,7 +173,7 @@ paths:
       tags:
         - category
       summary: Modify a category
-      description: Modify the name or color of a category
+      description: Modify the name or color of a category from the list of categories for a user with the category ID. The user ID is automatically added to the category.
       operationId: updateCategory
       requestBody:
         required: true
@@ -180,6 +185,7 @@ paths:
                 - id
                 - name
                 - color
+                - fk_user_id
               properties:
                 id:
                   type: integer
@@ -193,6 +199,10 @@ paths:
                   type: string
                   description: "Color associated with category"
                   example: "#FF5733"
+                fk_user_id:
+                  type: integer
+                  description: "User ID"
+                  example: 1
       responses:
         '200':
           description: Category successfully updated
@@ -415,7 +425,7 @@ paths:
       tags:
         - link
       summary: Add a new link for a user
-      description: Add a new link to the list of links for a user
+      description: Add a new link to the list of links for a user with a URL, a title, a description, a category ID and a user ID. The user ID is automatically added to the link.
       operationId: addLink
       requestBody:
         required: true
@@ -508,7 +518,7 @@ paths:
       tags:
         - link
       summary: Modify a link
-      description: Modify the URL, title, description or the category of a link
+      description: Modify the URL, title, description or the category of a link from the list of links for a user with the link ID. The user ID is automatically added to the link.
       operationId: updateLink
       requestBody:
         required: true

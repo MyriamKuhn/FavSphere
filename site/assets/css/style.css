@@ -153,3 +153,12 @@ ul
   --bs-table-bg: #333333;
   --bs-table-striped-bg: #333333;
 }
+
+.logout {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.logout:hover {
+  transform: scale(1.05);
+}

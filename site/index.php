@@ -80,6 +80,9 @@
       case '/categories':
         $page = '<script type="module" src="/site/assets/js/categories.js"></script>';
         break;
+      default:
+        $page = '';
+        break;
     }
     echo $page;
   ?>
