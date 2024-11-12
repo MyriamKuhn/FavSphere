@@ -1,0 +1,32 @@
+  <div class="d-flex flex-column align-items-center">
+    <div class="text-center">
+      <img src="/site/assets/img/logo_big.svg" alt="Logo de FavSphere" class="w-50 pb-5 text-center">
+      <h1 class="text-uppercase">Bienvenue sur FavSphere</h1>
+      <p class="mb-5">Ce site est privé et son contenu est réservé aux utilisateurs inscrits !</p>
+      <p>Connectez-vous pour accéder à vos liens favoris :</p>
+    </div>
+    <div class="d-flex flex-column align-items-center w-75">
+      <!-- Message d'erreur -->
+      <div id="message" class="alert alert-danger w-100 d-none" role="alert">
+        <span></span>
+      </div>
+      <!-- Formulaire de login -->
+      <form id="login-form" class="d-flex flex-column align-items-center w-100 needs-validation" method="post" novalidate>
+        <div class="form-floating mb-3 w-100">
+          <input type="text" class="form-control" name="username" id="username" required>
+          <label for="username">Utilisateur</label>
+          <div class="invalid-feedback">
+            Entrez votre nom d'utilisateur.
+          </div>
+        </div>
+        <div class="input-group mb-3 w-100">
+          <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" required>
+            <label for="password">Mot de passe</label>
+          </div>
+          <span class="input-group-text"><i class="bi bi-eye-slash toggleIconPasword"></i></span>
+        </div>
+        <input type="submit" class="btn btn-warning text-uppercase fw-bold" value="Connexion">
+      </form>
+    </div>
+  </div>
