@@ -1,0 +1,133 @@
+<div class="d-flex flex-column">
+  <div class="mb-5 text-center">
+    <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50 logout" id="logout">
+  </div>
+  <!-- Ajouter un lien -->
+  <div class="d-flex justify-content-center pb-5 gap-2">
+    <button type="button" class="btn btn-warning text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#addModal">
+      Ajouter une catégorie
+    </button>
+    <button type="button" class="btn btn-warning text-uppercase fw-bold" id="links">
+      Voir les liens
+    </button>
+  </div>
+  <!-- Chargement -->
+  <div class="d-flex justify-content-center mt-5" id="loading">
+    <div class="spinner-border text-warning" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+  <!-- Message d'erreur -->
+  <div class="d-flex justify-content-center mt-5 visually-hidden" id="alertMessage">
+    <!-- Affichage du message d'erreur -->
+  </div>
+  <!-- Filtres -->
+  <div class="form-floating mb-5">
+    <input type="text" id="categoryFilter" class="form-control">
+    <label for="categoryFilter">Rechercher une catégorie</label>
+  </div>
+  <!-- Tableau des liens -->
+  <table id="categoryTable" class="visually-hidden table-striped table-dark table table-hover">
+    <thead>
+      <tr>
+        <th class="all">Catégorie</th>
+        <th>Couleur</th>
+        <th class="all">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Les données seront insérées ici par DataTables -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Avertissement -->
+<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="categoryTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase" id="categoryTitle"></h5>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer la catégorie ?</p>
+        <p class="text-warning fw-medium"><i class="bi bi-exclamation-triangle"></i> Attention ! La suppression d'une catégorie à laquelle sont attribuée des liens entrainera automatiquement la suppression de ces liens !</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmDelete">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ajouter -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase" id="modalTitle">Ajouter une catégorie</h5>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger visually-hidden" id="alertAdd">
+          <p class="mb-0">Erreur lors de l'ajout de la catégorie.</p>
+        </div>
+        <form id="addCategoryForm" method="post" class="needs-validation" novalidate>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="name" id="name" required>
+            <label for="name">Catégorie</label>
+            <div class="invalid-feedback">
+              Entrez le nom de la catégorie.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="color" class="form-control" name="color" id="color" required>
+            <label for="color">Couleur</label>
+            <div class="invalid-feedback">
+              Sélectionnez une couleur.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmAdd">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase" id="modalUpdateTitle">Modifier une catégorie</h5>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger visually-hidden" id="alertUpdate">
+          <p class="mb-0">Erreur lors de la modification de la catégorie.</p>
+        </div>
+        <form id="updateCategoryForm" method="post" class="needs-validation" novalidate>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="name" id="updateName" required>
+            <label for="updateName">Catégorie</label>
+            <div class="invalid-feedback">
+              Entrez le nom de la catégorie.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="color" class="form-control" name="color" id="updateColor" required>
+            <label for="updateColor">Couleur</label>
+            <div class="invalid-feedback">
+              Sélectionnez une couleur.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmUpdate">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+  <div class="d-flex flex-column">
+    <div class="mb-5 text-center">
+      <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50 logout" id="return">
+    </div>
+    <h1 class="text-uppercase mb-3 mt-5">Mentions légales</h1>
+    <h2 class="text-uppercase mt-2">Informations générales</h2>
+    <p>Conformément à l'article 6 de la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, nous vous informons que le site FavSphere (ci-après "le Site") est la propriété de Kühn Myriam (ci-après "le Responsable du Site"), en qualité de responsable de la publication.</p>
+    <h3 class="text-uppercase mt-2">éditeur</h3>
+    <ul>
+      <li>Kühn Myriam</li>
+      <li>8 rue Louis Pasteur - 57230 BITCHE (France)</li>
+      <li><a href="mailto:contact@myriamkuhn.com">contact@myriamkuhn.com</a></li>
+    </ul>
+    <h3 class="text-uppercase mt-2">hébergeur</h3>
+    <ul>
+      <li>IONOS SARL</li>
+      <li>7, place de la Gare - BP 70109 - 57200 Sarreguemines Cedex (France)</li>
+      <li><a href="https://www.ionos.fr/">https://www.ionos.fr/</a></li>
+    </ul>
+    <h2 class="text-uppercase mt-3">Objet du site</h2>
+    <p>Le site FavSphere est un site privé, réservé à un usage personnel et exclusivement destiné aux utilisateurs autorisés. Il permet de gérer des liens favoris.</p>
+    <h2 class="text-uppercase mt-3">Propriété intellectuelle</h2>
+    <p>Le contenu du site, y compris les textes, images, logos, graphiques, vidéos et autres éléments, est protégé par les lois en vigueur sur la propriété intellectuelle. Tous les droits de reproduction, de représentation et d'exploitation sont réservés, sauf autorisation expresse du Responsable du Site.</p>
+    <h2 class="text-uppercase mt-3">Protection des données personnelles</h2>
+    <p>Le Responsable du Site attache une grande importance à la protection de la vie privée et des données personnelles de ses utilisateurs. Les informations collectées sur ce site sont exclusivement destinées à un usage interne et ne sont pas partagées avec des tiers, sauf si nécessaire pour le bon fonctionnement du site.</p>
+    <p>Nous collectons les données de connexion et de navigation (par exemple, adresse IP, type de navigateur) dans le seul but de vous permettre de vous connecter et utiliser le site, améliorer l'expérience utilisateur et assurer la sécurité des données.</p>
+    <p>Conformément à la législation sur la protection des données personnelles, les utilisateurs ont un droit d'accès, de rectification et de suppression des données personnelles les concernant. Pour exercer ce droit, veuillez contacter le Responsable du Site par e-mail à l'adresse suivante : <a href="mailto:contact@myriamkuhn.com">contact@myriamkuhn.com</a>.</p>
+    <h2 class="text-uppercase mt-3">Cookies</h2>
+    <p>Le site utilise des cookies pour améliorer l'expérience utilisateur, notamment pour la gestion des sessions et l'authentification des utilisateurs. En naviguant sur le site, vous consentez à l'utilisation de ces cookies.</p>
+    <h2 class="text-uppercase mt-3">Responsabilité</h2>
+    <p>Le Responsable du Site s'efforce de fournir des informations précises et à jour sur le site. Cependant, il ne pourra être tenu responsable de toute erreur, omission ou de toute situation découlant de l'utilisation de ces informations. Le Site est mis à disposition « tel quel » et le Responsable du Site ne garantit pas l'absence d'erreurs, ni la disponibilité continue du site.</p>
+    <h2 class="text-uppercase mt-3">Modifications des mentions légales</h2>
+    <p>Le Responsable du Site se réserve le droit de modifier les présentes mentions légales à tout moment. Les utilisateurs sont invités à consulter régulièrement cette page pour prendre connaissance des éventuelles mises à jour.</p>
+    <h2 class="text-uppercase mt-3">Loi applicable et juridiction compétente</h2>
+    <p>Les présentes mentions légales sont régies par la législation en vigueur. En cas de litige, les tribunaux compétents seront ceux du lieu de résidence du Responsable du Site.</p>
+  </div>
+
+  <script>
+    document.getElementById('return').addEventListener('click', () => {
+      if (sessionStorage.getItem('authToken')) {
+        location.replace('/favorites');
+      } else {
+        window.location.href = window.location.origin
+      }
+    });
+  </script>
