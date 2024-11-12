@@ -37,9 +37,12 @@
       case '/favorites':
         $page = 'favorites.html';
         break;
+      case '/categories':
+        $page = 'categories.html';
+        break;
       default:
         http_response_code(404);
-        $page = 'errors/404.html';
+        $page = '/../errors/404.html';
         break;
     }
     // Charger le contenu de la page
@@ -73,6 +76,9 @@
         break;
       case '/favorites':
         $page = '<script type="module" src="/site/assets/js/favorites.js"></script>';
+        break;
+      case '/categories':
+        $page = '<script type="module" src="/site/assets/js/categories.js"></script>';
         break;
     }
     echo $page;
