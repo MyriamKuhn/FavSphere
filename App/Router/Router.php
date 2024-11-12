@@ -39,7 +39,7 @@ class Router
       }
     } else {
       http_response_code(404);
-      require __DIR__ . '/../../errors/404.html';
+      require __DIR__ . '/../../errors/404_app.html';
       return;
     }
   }

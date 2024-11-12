@@ -145,10 +145,6 @@ ul
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.linksTable {
-  width: 100%;
-}
-
 .table {
   --bs-table-bg: #333333;
   --bs-table-striped-bg: #333333;
