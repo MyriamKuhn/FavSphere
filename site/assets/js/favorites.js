@@ -48,7 +48,7 @@ window.onload = function() {
         $('#linksTable').DataTable().clear().destroy();
       }
       // Initialisation de DataTable
-      $('#linksTable').DataTable({
+      const table = $('#linksTable').DataTable({
         data: links,  
         columns: [
           { 
@@ -134,6 +134,20 @@ window.onload = function() {
           attachEventListeners(links); 
         },
       });
+
+      // Filtrer les liens par titre
+      $('#titleFilter').on('keyup', function() {
+      table.column(0).search(this.value).draw();
+      });
+
+      // Filtrer par categorie
+      $('#categoryFilter').on('change', function() {
+        table.column(3).search(this.value).draw();  
+      });
+
+      // Remplir le select de filtre par catégorie
+      showCategories();
+
     })
     .catch(error => {
       console.error('Erreur de récupération des liens:', error);
@@ -144,10 +158,54 @@ window.onload = function() {
       location.replace('/categories');
     });
 
+    
+
   } else {
     // Sinon, rediriger vers la page de connexion
     window.location.href = window.location.origin;
   }
+}
+
+/**
+ * Fonction pour afficher les catégories dans le menu déroulant
+ * 
+ * @returns {void}
+ * @async
+ * @throws {Error} - Erreur de récupération des catégories
+ */
+function showCategories() {
+  fetch('http://favsphere.local/app/categories', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.status === 401 || response.status === 405 || response.status === 500) {
+      window.location.href = window.location.origin;
+    } else {
+      return response.json();
+    }
+  })
+  .then(data => {
+    if (!data) return;
+
+    const categories = data.categories;
+
+    // Ajouter les options de la liste déroulante
+    const categorySelect = document.getElementById('categoryFilter');
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = secureInput(category.name).trim();
+      option.textContent = category.name;
+      option.style.backgroundColor = category.color.match(/^#[0-9A-F]{6}$/i) ? category.color : '#CCCCCC';
+      categorySelect.appendChild(option);
+    });
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 
 /**

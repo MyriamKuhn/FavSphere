@@ -21,6 +21,19 @@
   <div class="d-flex justify-content-center mt-5 visually-hidden" id="alertMessage">
     <!-- Affichage du message d'erreur -->
   </div>
+  <!-- Filtres -->
+  <div class="mb-5">
+    <div class="form-floating mb-3">
+      <input type="text" id="titleFilter" class="form-control">
+      <label for="titleFilter">Rechercher un titre</label>
+    </div>
+    <div class="form-floating mb-3">
+      <select id="categoryFilter" class="form-select">
+        <option value="" selected>Toutes les catégories</option>
+        <!-- Les données seront insérées ici par JavaScript -->
+      </select>
+      <label for="categoryFilter">Filtrer par catégorie</label>
+  </div>
   <!-- Tableau des liens -->
   <table id="linksTable" class="visually-hidden table-striped table-dark table table-hover">
     <thead>
