@@ -17,3 +17,17 @@ export function secureInput(text) {
   };
   return text.replace(/[<>"'&]/g, (m) => map[m]);
 }
+
+
+/***************/
+
+/* DECONNEXION */
+
+/***************/
+/**
+ * Fonction pour déconnecter l'utilisateur
+ */
+export function logout() {
+  sessionStorage.removeItem('authToken');
+  window.location.href = window.location.origin;
+}

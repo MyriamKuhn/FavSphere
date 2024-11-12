@@ -3,7 +3,7 @@
 /* IMPORT */
 
 /**********/
-import { secureInput } from '/site/assets/js/utils.js';
+import { secureInput, logout } from '/site/assets/js/utils.js';
 
 
 /********************/
@@ -166,7 +166,8 @@ window.onload = function() {
       location.replace('/categories');
     });
 
-    
+    // Ajouter un écouteur d'événements pour le bouton "Déconnexion"
+    document.getElementById('logout').addEventListener('click', logout);
 
   } else {
     // Sinon, rediriger vers la page de connexion
@@ -592,7 +593,7 @@ function editLink(linkId) {
   };
 
   // Envoyer les données au serveur
-  fetch(`${apiBaseUrl}/addLink`, {
+  fetch(`${apiBaseUrl}/updateLink`, {
     method: 'PUT',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('authToken'),
