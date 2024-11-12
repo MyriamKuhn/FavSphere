@@ -1,0 +1,155 @@
+body
+{
+  min-height: 100vh;
+  background-color: #333333;
+  color: #F5F5F5; 
+  font-family: "Roboto", serif;
+}
+
+a {
+  color: #FF8C00;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #FFA500;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 165, 0, 0.5) !important;
+  border-color: #ffa500 !important;  
+}
+
+h1, h2, h3, h4, h5, h6
+{
+  color: #FF8C00;
+  font-family: "Poppins", serif;
+}
+
+ul
+{
+  list-style-type: none;
+}
+
+.btn-warning {
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+  color: #333333;
+  font-family: "Poppins", serif;
+}
+
+.btn-warning:hover {
+  background-color: #FFA500;
+  border-color: #FFA500;
+  color: #333333;
+  font-family: "Poppins", serif;
+}
+
+.btn-primary {
+  background-color: #4A90E2;
+  border-color: #4A90E2;
+  color: #333333;
+  font-family: "Poppins", serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover {
+  background-color: #4169E1;
+  border-color: #4169E1;
+  color: #333333;
+  font-family: "Poppins", serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btn-secondary {
+  background-color: #A1D6A1;
+  border-color: #A1D6A1;
+  color: #333333;
+  font-family: "Poppins", serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btn-secondary:hover {
+  background-color: #7CB47C;
+  border-color: #7CB47C;
+  color: #333333;
+  font-family: "Poppins", serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.text-warning {
+  color: #FF8C00;
+}
+
+.modal-content
+{
+  background-color: #333333;
+  color: #F5F5F5;
+}
+
+.modal-body
+{
+  font-family: "Lora", serif;
+}
+
+.dt-search {
+  display: none;
+}
+
+.page-item .page-link {
+  border-color: #FF8C00;
+  background: #FF8C00;
+  color: #333333;
+}
+
+.page-item .page-link:focus {
+  background: #FFA500;
+  border-color: #FFA500;
+  box-shadow: 0 0 0 0.2rem rgba(255, 165, 0, 0.5);
+}
+
+.page-item .page-link:active {
+  background: #FFA500;
+  border-color: #FFA500;
+}
+
+.page-item .page-link:hover {
+  background: #FFA500;
+  border-color: #FFA500;
+}
+
+.page-item.active .page-link {
+  background: #e78001;
+  border-color: #e78001;
+  color: #333333;
+}
+
+.page-link:hover {
+  background: #FFA500;
+  border-color: #FFA500;
+}
+
+.category {
+  font-family: "Lora", serif;
+  text-transform: uppercase;
+  font-weight: semi-bold;
+  display: inline-block; 
+  padding: 5px 10px; 
+  color: #F5F5F5; 
+  border-radius: 20px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.linksTable {
+  width: 100%;
+}
+
+.table {
+  --bs-table-bg: #333333;
+  --bs-table-striped-bg: #333333;
+}

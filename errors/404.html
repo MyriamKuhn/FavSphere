@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  404 - Not Found
-</body>
-</html>
+<div class="d-flex flex-column">
+  <div class="mb-5 text-center">
+    <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50">
+  </div>
+
+  <h2 class="text-uppercase text-center fs-1 mb-5">Page non trouvée</h2>
+
+  <div class="d-flex justify-content-center py-5">
+    <button type="button" class="btn btn-warning text-uppercase fw-bold" id="return">
+      Retour à l'accueil
+    </button>
+  </div>
+</div>
+
+<script>
+  document.getElementById('return').addEventListener('click', () => {
+    if (sessionStorage.getItem('authToken')) {
+      location.replace('/favorites');
+    } else {
+      window.location.href = window.location.origin
+    }
+  });
+</script>

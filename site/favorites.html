@@ -1,0 +1,176 @@
+<div class="d-flex flex-column">
+  <div class="mb-5 text-center">
+    <img src="/site/assets/img/logo_name.svg" alt="Logo nom FavSphere" class="w-50">
+  </div>
+  <!-- Ajouter un lien -->
+  <div class="d-flex justify-content-center pb-5 gap-2">
+    <button type="button" class="btn btn-warning text-uppercase fw-bold" data-bs-toggle="modal" data-bs-target="#addModal">
+      Ajouter un lien
+    </button>
+    <button type="button" class="btn btn-warning text-uppercase fw-bold" id="categories">
+      Gérer les catégories
+    </button>
+  </div>
+  <!-- Chargement -->
+  <div class="d-flex justify-content-center mt-5" id="loading">
+    <div class="spinner-border text-warning" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+  <!-- Message d'erreur -->
+  <div class="d-flex justify-content-center mt-5 visually-hidden" id="alertMessage">
+    <!-- Affichage du message d'erreur -->
+  </div>
+  <!-- Filtres -->
+  <div class="mb-5">
+    <div class="form-floating mb-3">
+      <input type="text" id="titleFilter" class="form-control">
+      <label for="titleFilter">Rechercher un titre</label>
+    </div>
+    <div class="form-floating mb-3">
+      <select id="categoryFilter" class="form-select">
+        <option value="" selected>Toutes les catégories</option>
+        <!-- Les données seront insérées ici par JavaScript -->
+      </select>
+      <label for="categoryFilter">Filtrer par catégorie</label>
+  </div>
+  <!-- Tableau des liens -->
+  <table id="linksTable" class="visually-hidden table-striped table-dark table table-hover">
+    <thead>
+      <tr>
+        <th class="all">Nom du lien</th>
+        <th class="none">URL</th>
+        <th>Description</th>
+        <th>Catégorie</th>
+        <th class="all">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Les données seront insérées ici par DataTables -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Avertissement -->
+<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="linkTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase" id="linkTitle"></h5>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer le lien ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmDelete">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ajouter -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase" id="modalTitle">Ajouter un lien</h5>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger visually-hidden" id="alertAdd">
+          <p class="mb-0">Erreur lors de l'ajout du lien.</p>
+        </div>
+        <form id="addLinkForm" method="post" class="needs-validation" novalidate>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="title" id="title" required>
+            <label for="title">Nom du lien</label>
+            <div class="invalid-feedback">
+              Entrez le nom du lien.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="url" class="form-control" name="url" id="url" required>
+            <label for="url">URL</label>
+            <div class="invalid-feedback">
+              Entrez une URL valide.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control" name="description" id="description" required></textarea>
+            <label for="description">Description</label>
+            <div class="invalid-feedback">
+              Entrez une description.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <select class="form-select" name="category" id="category" required>
+              <option value="" selected disabled>Choisissez une catégorie</option>
+              <!-- Les données seront insérées ici par JavaScript -->
+            </select>
+            <label for="category">Catégorie</label>
+            <div class="invalid-feedback">
+              Choisissez une catégorie.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmAdd">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-uppercase" id="modalUpdateTitle">Modifier un lien</h5>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger visually-hidden" id="alertUpdate">
+          <p class="mb-0">Erreur lors de la modification du lien.</p>
+        </div>
+        <form id="updateLinkForm" method="post" class="needs-validation" novalidate>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="title" id="updateTitle" required>
+            <label for="updateTitle">Nom du lien</label>
+            <div class="invalid-feedback">
+              Entrez le nom du lien.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="url" class="form-control" name="url" id="updateUrl" required>
+            <label for="updateUrl">URL</label>
+            <div class="invalid-feedback">
+              Entrez une URL valide.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control" name="description" id="updateDescription" required></textarea>
+            <label for="updateDescription">Description</label>
+            <div class="invalid-feedback">
+              Entrez une description.
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <select class="form-select" name="category" id="updateCategory" required>
+              <option value="" selected disabled>Choisissez une catégorie</option>
+              <!-- Les données seront insérées ici par JavaScript -->
+            </select>
+            <label for="updateCategory">Catégorie</label>
+            <div class="invalid-feedback">
+              Choisissez une catégorie.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirmUpdate">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
