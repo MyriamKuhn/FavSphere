@@ -43,5 +43,5 @@ if (in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE']) && !verifyCs
 if (strpos($requestUri, '/app') === 0) {
   require_once 'App/index.php'; // Le fichier qui gère les requêtes API
 } else {
-  require_once 'site/index.html'; // Le fichier qui gère les pages du site
+  require_once 'site/index.php'; // Le fichier qui gère les pages du site
 }

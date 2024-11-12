@@ -56,6 +56,7 @@ class Link
    *             [title] => "Example Link"
    *             [description] => "This is an example link"
    *             [category_name] => "Technology"
+   *             [category_color] => "#FF5733"
    *         )
    *     [1] => Array
    *         (
@@ -64,6 +65,7 @@ class Link
    *             [title] => "Another Link"
    *             [description] => "This is another link"
    *             [category_name] => "Science"
+   *             [category_color] => "#33FF57"
    *         )
    * )
    * ```
@@ -75,7 +77,7 @@ class Link
         throw new Exception("L'identifiant de l'utilisateur est requis");
       }
 
-      $sql = "SELECT link.*, category.name AS category_name
+      $sql = "SELECT link.*, category.name AS category_name, category.color AS category_color
               FROM " . $this->table . " AS link
               INNER JOIN category ON link.fk_category_id = category.id
               WHERE link.fk_user_id = :fk_user_id";
