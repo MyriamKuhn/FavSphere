@@ -229,6 +229,9 @@ function addCategory() {
       const message = document.getElementById('alertAdd');
       message.textContent = 'Données incorrectes ou manquantes.';
       message.classList.remove('visually-hidden');
+      setTimeout(() => {
+        message.classList.add('visually-hidden');
+      }, 5000);
       return;
     }
   })
@@ -340,6 +343,9 @@ function editCategory(originalName, originalColor, categoryId) {
       const message = document.getElementById('alertUpdate');
       message.textContent = 'Données incorrectes ou manquantes.';
       message.classList.remove('visually-hidden');
+      setTimeout(() => {
+        message.classList.add('visually-hidden');
+      }, 5000);
       return;
     }
   })
