@@ -11,7 +11,7 @@ import { secureInput, logout } from '/site/assets/js/utils.js';
 /* VARIABLE GLOBALE */
 
 /********************/
-const apiBaseUrl = 'http://favsphere.local/app';
+const apiBaseUrl = 'https://favsphere.myriamkuhn.com/app';
 
 
 /*************************/
