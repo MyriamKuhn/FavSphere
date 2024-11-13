@@ -123,13 +123,13 @@ window.onload = function() {
             const target = event.target;
             // Vérifier si l'élément cible est un bouton d'édition
             if (target && target.id && target.id.startsWith('edit')) {
-              const linkId = target.id.replace('edit', '');
-              const securedLinkId = parseInt(linkId, 10);
-              showEditModal(links, securedLinkId);
+              const categoryId = target.id.replace('edit', '');
+              const securedCategoryId = parseInt(categoryId, 10);
+              showEditModal(categories, securedCategoryId);
             } else if (target && target.id && target.id.startsWith('delete')) {
-              const linkId = target.id.replace('delete', '');
-              const securedLinkId = parseInt(linkId, 10);
-              showWarningModal(links, securedLinkId);
+              const categoryId = target.id.replace('delete', '');
+              const securedCategoryId = parseInt(categoryId, 10);
+              showWarningModal(categories, securedCategoryId);
             }
           });
         },
