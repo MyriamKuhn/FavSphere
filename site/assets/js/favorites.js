@@ -317,6 +317,8 @@ function deleteLink(linkId) {
  * @throws {Error} - Erreur d'ajout 
  */
 document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
+  // Supprimer les messages d'alerte
+  document.getElementById('alertAdd').classList.add('visually-hidden');
   // Récupérer la liste des catégories
   fetch(`${apiBaseUrl}/categories`, {
     method: 'GET',
@@ -533,6 +535,9 @@ function showEditModal(links, linkId) {
   document.getElementById('updateTitle').value = title;
   document.getElementById('updateUrl').value = url;
   document.getElementById('updateDescription').value = description;
+
+  // Supprimer les messages d'alerte
+  document.getElementById('alertUpdate').classList.add('visually-hidden');
   
   // Afficher le modal de modification
   $('#updateModal').modal('show');
