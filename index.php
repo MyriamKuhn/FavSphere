@@ -5,6 +5,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . '/error.log');
 ini_set('session.save_path', __DIR__ . '/sessions');
+ini_set('session.gc_maxlifetime', 3600);
+ini_set('session.gc_probability', 1);
+ini_set('session.gc_divisor', 100);
 
 // Sécurisation du cookie de session avec httpOnly
 session_set_cookie_params([
