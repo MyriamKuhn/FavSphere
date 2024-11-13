@@ -11,7 +11,7 @@ import { secureInput, logout } from '/site/assets/js/utils.js';
 /* VARIABLE GLOBALE */
 
 /********************/
-const apiBaseUrl = 'https://favsphere.myriamkuhn.com/app';
+const apiBaseUrl = 'http://favsphere.local/app';
 
 
 /*************************/
@@ -228,40 +228,6 @@ function showCategories() {
   })
   .catch(error => {
     console.error(error);
-  });
-}
-
-/**
- * Fonction pour attacher les événements aux boutons Modifier et Supprimer
- * 
- * @param {Array} links - La liste des liens
- * @returns {void}
- */
-function attachEventListeners(links) {
-  // Attacher les événements aux boutons Modifier et Supprimer
-  document.querySelectorAll('[id*="edit"]').forEach(item => {
-    if (item.hasAttribute('data-listener-attached') === true) {
-      return;
-    } else {
-      item.setAttribute('data-listener-attached', true);
-      item.addEventListener('click', event => {
-        const linkId = item.id.replace('edit', '');
-        const securedLinkId = parseInt(linkId, 10);
-        showEditModal(links, securedLinkId);
-      });
-    }
-  });
-  document.querySelectorAll('[id*="delete"]').forEach(item => {
-    if (item.hasAttribute('data-listener-attached')) {
-      return; 
-    } else {
-      item.setAttribute('data-listener-attached', true);
-      item.addEventListener('click', event => {
-        const linkId = item.id.replace('delete', '');
-        const securedLinkId = parseInt(linkId, 10);
-        showWarningModal(links, securedLinkId);
-      });
-    }
   });
 }
 
@@ -546,6 +512,10 @@ function showEditModal(links, linkId) {
 /**
  * Fonction pour modifier un lien
  * 
+ * @param {string} originalTitle - Le titre original du lien
+ * @param {string} originalUrl - L'URL original du lien
+ * @param {string} originalDescription - La description originale du lien
+ * @param {number} originalCategory - La catégorie originale du lien
  * @param {number} linkId - L'ID du lien à modifier
  * @returns {void}
  * @async
@@ -598,8 +568,7 @@ function editLink(originalTitle, originalUrl, originalDescription, originalCateg
   const category = secureInput(categoryInput.value).trim();
 
   // Vérification si des changements ont été effectués
-  if (title === originalTitle && url === originalUrl && description === originalDescription && category === originalCategory) {
-    console.log('Aucune modification détectée.');
+  if (title == originalTitle && url == originalUrl && description == originalDescription && category == originalCategory) {
     $('#updateModal').modal('hide');
     return; // Ne pas envoyer la requête si rien n'a changé
   }
@@ -640,9 +609,6 @@ function editLink(originalTitle, originalUrl, originalDescription, originalCateg
     console.error('Erreur d\'ajout:', error);
   });
 }
-
-
-
 
 
 
