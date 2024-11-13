@@ -11,7 +11,7 @@ import { secureInput, logout } from '/site/assets/js/utils.js';
 /* VARIABLE GLOBALE */
 
 /********************/
-const apiBaseUrl = 'https://favsphere.myriamkuhn.com/app';
+const apiBaseUrl = 'http://favsphere.local/app';
 
 
 /*************************/
@@ -216,8 +216,14 @@ function showCategories() {
 
     const categories = data.categories;
 
-    // Ajouter les options de la liste déroulante
     const categorySelect = document.getElementById('categoryFilter');
+    // Supprimer toutes les options sauf l'option disabled
+    Array.from(categorySelect.options).forEach(option => {
+      if (option.value !== "") {
+        categorySelect.remove(option.index);
+      }
+    });
+    // Ajouter les options de la liste déroulante
     categories.forEach(category => {
       const option = document.createElement('option');
       option.value = secureInput(category.name).trim();
@@ -331,8 +337,15 @@ document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
 
     const categories = data.categories;
 
+    const categorySelect = document.getElementById('categoryFilter');
+    // Supprimer toutes les options sauf l'option disabled
+    for (let i = categorySelect.options.length - 1; i >= 0; i--) {
+      const option = categorySelect.options[i];
+      if (!option.disabled) {
+        categorySelect.remove(i);
+      }
+    }
     // Ajouter les options de la liste déroulante
-    const categorySelect = document.getElementById('category');
     categories.forEach(category => {
       const option = document.createElement('option');
       option.value = parseInt(category.id, 10);
@@ -480,8 +493,15 @@ function showEditModal(links, linkId) {
   
     const categories = data.categories;
   
+    const categorySelect = document.getElementById('categoryFilter');
+    // Supprimer toutes les options sauf l'option disabled
+    for (let i = categorySelect.options.length - 1; i >= 0; i--) {
+      const option = categorySelect.options[i];
+      if (!option.disabled) {
+        categorySelect.remove(i);
+      }
+    }
     // Ajouter les options de la liste déroulante
-    const categorySelect = document.getElementById('updateCategory');
     categories.forEach(category => {
       const option = document.createElement('option');
       option.value = parseInt(category.id, 10);
