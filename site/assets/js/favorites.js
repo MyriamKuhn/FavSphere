@@ -139,7 +139,21 @@ window.onload = function() {
         initComplete: function () {
           document.getElementById('linksTable').classList.remove('visually-hidden');
           document.getElementById('loading').classList.add('visually-hidden');
-          attachEventListeners(links); 
+          
+          // Ajouter un événement délégué pour les boutons "edit"
+          document.getElementById('linksTable').addEventListener('click', function(event) {
+            const target = event.target;
+            // Vérifier si l'élément cible est un bouton d'édition
+            if (target && target.id && target.id.startsWith('edit')) {
+              const linkId = target.id.replace('edit', '');
+              const securedLinkId = parseInt(linkId, 10);
+              showEditModal(links, securedLinkId);
+            } else if (target && target.id && target.id.startsWith('delete')) {
+              const linkId = target.id.replace('delete', '');
+              const securedLinkId = parseInt(linkId, 10);
+              showWarningModal(links, securedLinkId);
+            }
+          });
         },
       });
 
@@ -214,40 +228,6 @@ function showCategories() {
   })
   .catch(error => {
     console.error(error);
-  });
-}
-
-/**
- * Fonction pour attacher les événements aux boutons Modifier et Supprimer
- * 
- * @param {Array} links - La liste des liens
- * @returns {void}
- */
-function attachEventListeners(links) {
-  // Attacher les événements aux boutons Modifier et Supprimer
-  document.querySelectorAll('[id*="edit"]').forEach(item => {
-    if (item.hasAttribute('data-listener-attached') === true) {
-      return;
-    } else {
-      item.setAttribute('data-listener-attached', true);
-      item.addEventListener('click', event => {
-        const linkId = item.id.replace('edit', '');
-        const securedLinkId = parseInt(linkId, 10);
-        showEditModal(links, securedLinkId);
-      });
-    }
-  });
-  document.querySelectorAll('[id*="delete"]').forEach(item => {
-    if (item.hasAttribute('data-listener-attached')) {
-      return; 
-    } else {
-      item.setAttribute('data-listener-attached', true);
-      item.addEventListener('click', event => {
-        const linkId = item.id.replace('delete', '');
-        const securedLinkId = parseInt(linkId, 10);
-        showWarningModal(links, securedLinkId);
-      });
-    }
   });
 }
 
@@ -525,19 +505,23 @@ function showEditModal(links, linkId) {
 
   // Ajouter un écouteur d'événements pour le bouton "Modifier" du modal
   document.getElementById('confirmUpdate').addEventListener('click', function() {
-    editLink(linkId);  // Appeler la fonction pour supprimer le lien
+    editLink(title, url, description, categoryId, linkId);  // Appeler la fonction pour supprimer le lien
   });
 }
 
 /**
  * Fonction pour modifier un lien
  * 
+ * @param {string} originalTitle - Le titre original du lien
+ * @param {string} originalUrl - L'URL original du lien
+ * @param {string} originalDescription - La description originale du lien
+ * @param {number} originalCategory - La catégorie originale du lien
  * @param {number} linkId - L'ID du lien à modifier
  * @returns {void}
  * @async
  * @throws {Error} - Erreur de modification
  */
-function editLink(linkId) {
+function editLink(originalTitle, originalUrl, originalDescription, originalCategory, linkId) {
   // Récupérer les valeurs des champs du formulaire
   const titleInput = document.getElementById('updateTitle');
   const urlInput = document.getElementById('updateUrl');
@@ -582,6 +566,12 @@ function editLink(linkId) {
   const url = secureInput(urlInput.value).trim();
   const description = secureInput(descriptionInput.value).trim();
   const category = secureInput(categoryInput.value).trim();
+
+  // Vérification si des changements ont été effectués
+  if (title == originalTitle && url == originalUrl && description == originalDescription && category == originalCategory) {
+    $('#updateModal').modal('hide');
+    return; // Ne pas envoyer la requête si rien n'a changé
+  }
 
   // Créer un objet avec les valeurs des champs
   const link = {

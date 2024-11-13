@@ -117,7 +117,21 @@ window.onload = function() {
         initComplete: function () {
           document.getElementById('categoryTable').classList.remove('visually-hidden');
           document.getElementById('loading').classList.add('visually-hidden');
-          attachEventListeners(categories); 
+          
+          // Ajouter un événement délégué pour les boutons "edit"
+          document.getElementById('categoryTable').addEventListener('click', function(event) {
+            const target = event.target;
+            // Vérifier si l'élément cible est un bouton d'édition
+            if (target && target.id && target.id.startsWith('edit')) {
+              const linkId = target.id.replace('edit', '');
+              const securedLinkId = parseInt(linkId, 10);
+              showEditModal(links, securedLinkId);
+            } else if (target && target.id && target.id.startsWith('delete')) {
+              const linkId = target.id.replace('delete', '');
+              const securedLinkId = parseInt(linkId, 10);
+              showWarningModal(links, securedLinkId);
+            }
+          });
         },
       });
 
@@ -143,40 +157,6 @@ window.onload = function() {
     // Sinon, rediriger vers la page de connexion
     window.location.href = window.location.origin;
   }
-}
-
-/**
- * Fonction pour attacher les événements aux boutons Modifier et Supprimer
- * 
- * @param {Array} categories - La liste des catégories
- * @returns {void}
- */
-function attachEventListeners(categories) {
-  // Attacher les événements aux boutons Modifier et Supprimer
-  document.querySelectorAll('[id*="edit"]').forEach(item => {
-    if (item.hasAttribute('data-listener-attached') === true) {
-      return;
-    } else {
-      item.setAttribute('data-listener-attached', true);
-      item.addEventListener('click', event => {
-        const categoryId = item.id.replace('edit', '');
-        const securedCategoryId = parseInt(categoryId, 10);
-        showEditModal(categories, securedCategoryId);
-      });
-    }
-  });
-  document.querySelectorAll('[id*="delete"]').forEach(item => {
-    if (item.hasAttribute('data-listener-attached')) {
-      return; 
-    } else {
-      item.setAttribute('data-listener-attached', true);
-      item.addEventListener('click', event => {
-        const categoryId = item.id.replace('delete', '');
-        const securedCategoryId = parseInt(categoryId, 10);
-        showWarningModal(categories, securedCategoryId);
-      });
-    }
-  });
 }
 
 
@@ -287,19 +267,21 @@ function showEditModal(categories, categoryId) {
 
   // Ajouter un écouteur d'événements pour le bouton "Modifier" du modal
   document.getElementById('confirmUpdate').addEventListener('click', function() {
-    editCategory(categoryId);  // Appeler la fonction pour supprimer le lien
+    editCategory(name, color, categoryId);  // Appeler la fonction pour supprimer le lien
   });
 }
 
 /**
  * Fonction pour modifier une catégorie
  * 
+ * @param {string} originalName - Le nom original de la catégorie
+ * @param {string} originalColor - La couleur originale de la catégorie
  * @param {number} categoryId - L'ID de la catégorie à modifier
  * @returns {void}
  * @async
  * @throws {Error} - Erreur de modification
  */
-function editCategory(categoryId) {
+function editCategory(originalName, originalColor, categoryId) {
   // Récupérer les valeurs des champs du formulaire
   const nameInput = document.getElementById('updateName');
   const colorInput = document.getElementById('updateColor');
@@ -324,6 +306,12 @@ function editCategory(categoryId) {
   // Sécurisation des données
   const name = secureInput(nameInput.value).trim();
   const color = colorInput.value;
+
+  // Vérification si des changements ont été effectués
+  if (name == originalName && color == originalColor) {
+    $('#updateModal').modal('hide');
+    return; // Ne pas envoyer la requête si rien n'a changé
+  }
 
   // Créer un objet avec les valeurs des champs
   const category = {
