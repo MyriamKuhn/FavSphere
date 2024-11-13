@@ -413,6 +413,14 @@ function addLink() {
   const description = secureInput(descriptionInput.value).trim();
   const category = secureInput(categoryInput.value).trim();
 
+  // Vérifier si les champs sont vide ou invalides
+  if (title === '' || title.length < 3 || title.length > 100 || url === '' || url.length < 3 || url.length > 255 || description === '' || description.length < 3 || category === '') {
+    const message = document.getElementById('alertAdd');
+    message.textContent = 'Données incorrectes ou manquantes.';
+    message.classList.remove('visually-hidden');
+    return;
+  }
+  
   // Créer un objet avec les valeurs des champs
   const link = {
     url: url,
