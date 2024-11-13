@@ -123,13 +123,13 @@ window.onload = function() {
             const target = event.target;
             // Vérifier si l'élément cible est un bouton d'édition
             if (target && target.id && target.id.startsWith('edit')) {
-              const linkId = target.id.replace('edit', '');
-              const securedLinkId = parseInt(linkId, 10);
-              showEditModal(links, securedLinkId);
+              const categoryId = target.id.replace('edit', '');
+              const securedCategoryId = parseInt(categoryId, 10);
+              showEditModal(categories, securedCategoryId);
             } else if (target && target.id && target.id.startsWith('delete')) {
-              const linkId = target.id.replace('delete', '');
-              const securedLinkId = parseInt(linkId, 10);
-              showWarningModal(links, securedLinkId);
+              const categoryId = target.id.replace('delete', '');
+              const securedCategoryId = parseInt(categoryId, 10);
+              showWarningModal(categories, securedCategoryId);
             }
           });
         },
@@ -167,6 +167,9 @@ window.onload = function() {
 /*************************/
 // Ajouter un écouteur d'événements pour le modal d'ajout de catégorie
 document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
+  // Supprimer les messages d'alerte
+  document.getElementById('alertAdd').classList.add('visually-hidden');
+
   // Ajouter un écouteur d'événements pour le bouton "Ajouter"
   document.getElementById('confirmAdd').addEventListener('click', addCategory);
 });
@@ -229,6 +232,9 @@ function addCategory() {
       const message = document.getElementById('alertAdd');
       message.textContent = 'Données incorrectes ou manquantes.';
       message.classList.remove('visually-hidden');
+      setTimeout(() => {
+        message.classList.add('visually-hidden');
+      }, 5000);
       return;
     }
   })
@@ -261,6 +267,9 @@ function showEditModal(categories, categoryId) {
   // Pré-remplir les champs du formulaire avec les valeurs de la catégorie
   document.getElementById('updateName').value = name;
   document.getElementById('updateColor').value = color;
+
+  // Supprimer les messages d'alerte
+  document.getElementById('alertUpdate').classList.add('visually-hidden');
   
   // Afficher le modal de modification
   $('#updateModal').modal('show');
@@ -340,6 +349,9 @@ function editCategory(originalName, originalColor, categoryId) {
       const message = document.getElementById('alertUpdate');
       message.textContent = 'Données incorrectes ou manquantes.';
       message.classList.remove('visually-hidden');
+      setTimeout(() => {
+        message.classList.add('visually-hidden');
+      }, 5000);
       return;
     }
   })
