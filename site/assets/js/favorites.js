@@ -317,6 +317,8 @@ function deleteLink(linkId) {
  * @throws {Error} - Erreur d'ajout 
  */
 document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
+  // Supprimer les messages d'alerte
+  document.getElementById('alertAdd').classList.add('visually-hidden');
   // Récupérer la liste des catégories
   fetch(`${apiBaseUrl}/categories`, {
     method: 'GET',
@@ -413,6 +415,17 @@ function addLink() {
   const description = secureInput(descriptionInput.value).trim();
   const category = secureInput(categoryInput.value).trim();
 
+  // Vérifier si les champs sont vide ou invalides
+  if (title === '' || title.length < 3 || title.length > 100 || url === '' || url.length < 3 || url.length > 255 || description === '' || description.length < 3 || category === '') {
+    const message = document.getElementById('alertAdd');
+    message.textContent = 'Données incorrectes ou manquantes.';
+    message.classList.remove('visually-hidden');
+    setTimeout(() => {
+      message.classList.add('visually-hidden');
+    }, 5000);
+    return;
+  }
+
   // Créer un objet avec les valeurs des champs
   const link = {
     url: url,
@@ -442,6 +455,9 @@ function addLink() {
       const message = document.getElementById('alertAdd');
       message.textContent = 'Données incorrectes ou manquantes.';
       message.classList.remove('visually-hidden');
+      setTimeout(() => {
+        message.classList.add('visually-hidden');
+      }, 5000);
       return;
     }
   })
@@ -519,6 +535,9 @@ function showEditModal(links, linkId) {
   document.getElementById('updateTitle').value = title;
   document.getElementById('updateUrl').value = url;
   document.getElementById('updateDescription').value = description;
+  
+  // Supprimer les messages d'alerte
+  document.getElementById('alertUpdate').classList.add('visually-hidden');
   
   // Afficher le modal de modification
   $('#updateModal').modal('show');
@@ -622,6 +641,9 @@ function editLink(originalTitle, originalUrl, originalDescription, originalCateg
       const message = document.getElementById('alertUpdate');
       message.textContent = 'Données incorrectes ou manquantes.';
       message.classList.remove('visually-hidden');
+      setTimeout(() => {
+        message.classList.add('visually-hidden');
+      }, 5000);
       return;
     }
   })
