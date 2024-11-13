@@ -167,6 +167,9 @@ window.onload = function() {
 /*************************/
 // Ajouter un écouteur d'événements pour le modal d'ajout de catégorie
 document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
+  // Supprimer les messages d'alerte
+  document.getElementById('alertAdd').classList.add('visually-hidden');
+  
   // Ajouter un écouteur d'événements pour le bouton "Ajouter"
   document.getElementById('confirmAdd').addEventListener('click', addCategory);
 });
@@ -264,6 +267,9 @@ function showEditModal(categories, categoryId) {
   // Pré-remplir les champs du formulaire avec les valeurs de la catégorie
   document.getElementById('updateName').value = name;
   document.getElementById('updateColor').value = color;
+
+  // Supprimer les messages d'alerte
+  document.getElementById('alertUpdate').classList.add('visually-hidden');
   
   // Afficher le modal de modification
   $('#updateModal').modal('show');
