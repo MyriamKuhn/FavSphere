@@ -337,7 +337,7 @@ document.getElementById('addModal').addEventListener('shown.bs.modal', () => {
 
     const categories = data.categories;
 
-    const categorySelect = document.getElementById('categoryFilter');
+    const categorySelect = document.getElementById('category');
     // Supprimer toutes les options sauf l'option disabled
     for (let i = categorySelect.options.length - 1; i >= 0; i--) {
       const option = categorySelect.options[i];
@@ -493,7 +493,7 @@ function showEditModal(links, linkId) {
   
     const categories = data.categories;
   
-    const categorySelect = document.getElementById('categoryFilter');
+    const categorySelect = document.getElementById('updateCategory');
     // Supprimer toutes les options sauf l'option disabled
     for (let i = categorySelect.options.length - 1; i >= 0; i--) {
       const option = categorySelect.options[i];
@@ -629,9 +629,5 @@ function editLink(originalTitle, originalUrl, originalDescription, originalCateg
     console.error('Erreur d\'ajout:', error);
   });
 }
-
-
-
-
 
 
